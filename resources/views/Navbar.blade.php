@@ -133,5 +133,6 @@
         </a>
       </li>
     </ul>
+    @csrf
 </nav>
   <!-- /.navbar -->
