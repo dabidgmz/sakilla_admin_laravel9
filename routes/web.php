@@ -14,5 +14,23 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    return view('index');
+})->name('index');
+
+Route::get('/Footer', function () {
+    return view('Footer');
+})->name('Footer');
+
+
+Route::get('/ControlSidebar', function () {
+    return view('ControlSidebar');
+})->name('ControlSidebar');
+
+Route::get('/Navbar', function () {
+    return view('Navbar');
+})->name('Navbar');
+
+
+Route::get('/Sidebar', function () {
+    return view('Sidebar');
+})->name('Sidebar');
