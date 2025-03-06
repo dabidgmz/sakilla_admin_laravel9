@@ -17,20 +17,44 @@ Route::get('/', function () {
     return view('index');
 })->name('index');
 
-Route::get('/Footer', function () {
-    return view('Footer');
-})->name('Footer');
+Route::get('/Actors', function () {
+    return view('Actors');
+})->name('Actors');
+
+Route::get('/Customers', function () {
+    return view('Customers');
+})->name('Customers');
+
+Route::get('/Categories', function () {
+    return view('Categories');
+})->name('Categories');
+
+Route::get('/Films', function () {
+    return view('Films');
+})->name('Films');
 
 
-Route::get('/ControlSidebar', function () {
-    return view('ControlSidebar');
-})->name('ControlSidebar');
-
-Route::get('/Navbar', function () {
-    return view('Navbar');
-})->name('Navbar');
+Route::get('/Inventory', function () {
+    return view('Inventory');
+})->name('Inventory');
 
 
-Route::get('/Sidebar', function () {
-    return view('Sidebar');
-})->name('Sidebar');
+Route::get('/Payments', function () {
+    return view('Payments');
+})->name('Payments');
+
+Route::get('/Stores', function () {
+    return view('Stores');
+})->name('Stores');
+
+Route::get('/Rentals', function () {
+    return view('Rentals');
+})->name('Rentals');
+
+Route::get('/Staff', function () {
+    return view('Staff');
+})->name('Staff');
+
+Route::get('/Stores', function () {
+    return view('Stores');
+})->name('Stores');

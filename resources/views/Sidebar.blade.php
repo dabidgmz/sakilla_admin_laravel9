@@ -2,11 +2,11 @@
 <div class="sidebar">
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-        <div class="image">
+        <!-- <div class="image">
           <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
-        </div>
+        </div> -->
         <div class="info">
-          <a href="#" class="d-block">Alexander Pierce</a>
+          <a href="#" class="d-block">Welcome User!!</a>
         </div>
       </div>
 
@@ -32,14 +32,14 @@
             <a href="#" class="nav-link active">
             <i class="nav-icon fas fa-film"></i>
               <p>
-                Movie Rental System
+                Cinema Studio System
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
             <ul class="nav nav-treeview">
               <!-- Customers -->
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="{{ route('Customers') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Customers</p>
                 </a>
@@ -47,7 +47,7 @@
 
               <!-- Films -->
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="{{route('Films')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Films</p>
                 </a>
@@ -55,7 +55,7 @@
 
               <!-- Actors -->
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="{{route('Actors')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Actors</p>
                 </a>
@@ -63,7 +63,7 @@
 
               <!-- Categories -->
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="{{route('Categories')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Categories</p>
                 </a>
@@ -71,7 +71,7 @@
 
               <!-- Inventory -->
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="{{route('Inventory')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Inventory</p>
                 </a>
@@ -79,7 +79,7 @@
 
               <!-- Rentals -->
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="{{route('Rentals')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Rentals</p>
                 </a>
@@ -87,7 +87,7 @@
 
               <!-- Payments -->
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="{{route('Payments')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Payments</p>
                 </a>
@@ -95,7 +95,7 @@
 
               <!-- Staff -->
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="{{route('Staff')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Staff</p>
                 </a>
@@ -103,17 +103,9 @@
 
               <!-- Stores -->
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="{{route('Stores')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Stores</p>
-                </a>
-              </li>
-
-              <!-- Reports (Optional) -->
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Reports</p>
                 </a>
               </li>
             </ul>
