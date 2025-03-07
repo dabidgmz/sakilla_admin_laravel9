@@ -63,7 +63,7 @@
                                 <table class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
-                                            <th>Rental ID</th>
+                                            <th>#</th>
                                             <th>Rental Date</th>
                                             <th>Inventory ID</th>
                                             <th>Customer ID</th>

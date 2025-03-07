@@ -11,6 +11,8 @@
 <div class="wrapper">
 
    @include('Navbar')
+   @include('Customer.add_customer_modal')
+   @include('Customer.update_customer_modal')
 
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <a href="index3.html" class="brand-link">
@@ -30,9 +32,11 @@
         <div class="content">
             <div class="container-fluid">
                 <div class="card">
-                    <div class="card-header">
+                    <div class="card-header d-flex justify-content-between align-items-center">
                         <h3 class="card-title">Customer List</h3>
-                        <a href="#" class="btn btn-primary float-right">Add Customer</a>
+                        <button class="btn btn-success" data-toggle="modal" data-target="#customerModal">
+                            <i class="fas fa-plus"></i> Agregar Customer
+                        </button>
                     </div>
 
                     <div class="card-body">

@@ -63,7 +63,7 @@
                                 <table class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
-                                            <th>Staff ID</th>
+                                            <th>#</th>
                                             <th>First Name</th>
                                             <th>Last Name</th>
                                             <th>Email</th>

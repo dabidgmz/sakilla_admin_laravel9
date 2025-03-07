@@ -60,7 +60,7 @@
                                 <table class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
-                                            <th>City ID</th>
+                                            <th>#</th>
                                             <th>City Name</th>
                                             <th>Country</th>
                                             <th>Actions</th>

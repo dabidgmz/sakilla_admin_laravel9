@@ -16,6 +16,7 @@
 <div class="wrapper">
 
     @include('Navbar')
+    @include('Addres.add_address_modal')
 
     <!-- Main Sidebar Container -->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
@@ -56,13 +57,17 @@
                     <div class="col-lg-12">
                         <!-- Address Table -->
                         <div class="card">
-                            <div class="card-header">
+                            <div class="card-header d-flex justify-content-between align-items-center">
                                 <h5 class="m-0">Address List</h5>
+                                <button class="btn btn-success mb-3" data-toggle="modal" data-target="#actorModal">
+                                    <i class="fas fa-plus"></i> Agregar Address
+                                </button>
                             </div>
                             <div class="card-body">
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>
+                                            <th>#</th>
                                             <th>Address</th>
                                             <th>District</th>
                                             <th>City</th>
@@ -75,6 +80,7 @@
                                     <tbody>
                                         {{--@foreach ($addresses as $address)
                                             <tr>
+                                                <td>{{ $address->address_id }}</td>
                                                 <td>{{ $address->address }}</td>
                                                 <td>{{ $address->district }}</td>
                                                 <td>{{ $address->city->name }}</td>

@@ -56,8 +56,8 @@
                     <div class="col-lg-12">
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">List of Movies</h3>
-                                <a href="#" class="btn btn-primary float-right">Add Movie</a>
+                                <h3 class="card-title">List of Films</h3>
+                                <a href="#" class="btn btn-primary float-right">Add Film</a>
                             </div>
                             <div class="card-body">
                                 <table class="table table-bordered table-striped">

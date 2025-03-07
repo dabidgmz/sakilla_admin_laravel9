@@ -59,7 +59,7 @@
                                 <table class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
-                                            <th>ID</th>
+                                            <th>#</th>
                                             <th>Language</th>
                                             <th>Actions</th>
                                         </tr>

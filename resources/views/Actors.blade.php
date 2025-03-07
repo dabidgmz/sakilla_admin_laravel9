@@ -16,6 +16,8 @@
 <div class="wrapper">
 
    @include('Navbar')
+   @include('Actors.add_actor_modal')
+   @include('Actors.update_actor_modal')
 
     <!-- Main Sidebar Container -->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
@@ -56,14 +58,17 @@
                     <div class="col-lg-12">
                         <!-- Actors Table -->
                         <div class="card">
-                            <div class="card-header">
+                            <div class="card-header d-flex justify-content-between align-items-center">
                                 <h5 class="m-0">Actors List</h5>
+                                <button class="btn btn-success mb-3" data-toggle="modal" data-target="#actorModal">
+                                    <i class="fas fa-plus"></i> Agregar Actor
+                                </button>
                             </div>
                             <div class="card-body">
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>
-                                            <th>Actor ID</th>
+                                            <th>#</th>
                                             <th>First Name</th>
                                             <th>Last Name</th>
                                             <th>Last Update</th>
