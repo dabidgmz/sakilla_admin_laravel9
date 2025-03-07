@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Flims</title>
+    <title>Movies</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -63,36 +63,48 @@
                                 <table class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
-                                            <th>Flim ID</th>
+                                            <th>ID</th>
                                             <th>Title</th>
                                             <th>Description</th>
                                             <th>Release Year</th>
                                             <th>Language</th>
-                                            <th>Rental Duration</th>
-                                            <th>Rental Rate</th>
+                                            <th>Orgl Language</th>
+                                            <th>Rntl Duration</th>
+                                            <th>Rntl Rate</th>
+                                            <th>Length</th>
+                                            <th>Repcmnt Cost</th>
+                                            <th>Rating</th>
+                                            <th>Spcl Features</th>
+                                            <th>Last Update</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    {{--@foreach($flims as $flim)
-                                            <tr>
-                                                <td>{{ $flim->flim_id }}</td>
-                                                <td>{{ $flim->title }}</td>
-                                                <td>{{ $flim->description }}</td>
-                                                <td>{{ $flim->release_year }}</td>
-                                                <td>{{ $flim->language_id }}</td>
-                                                <td>{{ $flim->rental_duration }}</td>
-                                                <td>{{ $flim->rental_rate }}</td>
-                                                <td>
-                                                    <a href="{{ route('flims.edit', $flim->flim_id) }}" class="btn btn-warning btn-sm">Edit</a>
-                                                    <form action="{{ route('flims.destroy', $flim->flim_id) }}" method="POST" style="display:inline;">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                                                    </form>
-                                                </td>
-                                            </tr>
-                                        @endforeach--}}
+                                    {{-- @foreach($flims as $flim)
+                                        <tr>
+                                            <td>{{ $flim->flim_id }}</td>
+                                            <td>{{ $flim->title }}</td>
+                                            <td>{{ $flim->description }}</td>
+                                            <td>{{ $flim->release_year }}</td>
+                                            <td>{{ $flim->language_id }}</td>
+                                            <td>{{ $flim->original_language_id }}</td>
+                                            <td>{{ $flim->rental_duration }}</td>
+                                            <td>{{ $flim->rental_rate }}</td>
+                                            <td>{{ $flim->length }}</td>
+                                            <td>{{ $flim->replacement_cost }}</td>
+                                            <td>{{ $flim->rating }}</td>
+                                            <td>{{ $flim->special_features }}</td>
+                                            <td>{{ $flim->last_update }}</td>
+                                            <td>
+                                                <a href="{{ route('flims.edit', $flim->flim_id) }}" class="btn btn-warning btn-sm">Edit</a>
+                                                <form action="{{ route('flims.destroy', $flim->flim_id) }}" method="POST" style="display:inline;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    @endforeach --}}
                                     </tbody>
                                 </table>
                             </div>

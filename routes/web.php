@@ -21,6 +21,10 @@ Route::get('/Actors', function () {
     return view('Actors');
 })->name('Actors');
 
+Route::get('/Address', function () {
+    return view('Address');
+})->name('Address');
+
 Route::get('/Customers', function () {
     return view('Customers');
 })->name('Customers');
@@ -43,6 +47,9 @@ Route::get('/Inventory', function () {
     return view('Inventory');
 })->name('Inventory');
 
+Route::get('/Languages', function () {
+    return view('Languages');
+})->name('Languages');
 
 Route::get('/Payments', function () {
     return view('Payments');

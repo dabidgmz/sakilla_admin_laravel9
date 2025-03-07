@@ -133,6 +133,23 @@
                                             </td>
                                         </tr>
                                     </tbody>
+                                    <!-- <tbody>
+                                        {{--@foreach($cities as $city)
+                                            <tr>
+                                                <td>{{ $city->city_id }}</td>
+                                                <td>{{ $city->city }}</td>
+                                                <td>{{ $city->country->country }}</td>
+                                                <td>
+                                                    <button class="btn btn-info btn-sm view-details"
+                                                        data-city="{{ $city->city }}"
+                                                        data-country="{{ $city->country->country }}"
+                                                        data-country-id="{{ $city->country->country_id }}">
+                                                        View Details
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        @endforeach --}}
+                                    </tbody> -->
                                 </table>
                             </div>
                         </div>

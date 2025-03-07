@@ -32,84 +32,102 @@
                     </p>
                 </a>
                 <ul class="nav nav-treeview">
-                    <!-- Customers -->
+                    <!-- Actors -->
                     <li class="nav-item">
-                        <a href="{{ route('Customers') }}" class="nav-link">
-                            <i class="nav-icon far fa-circle text-danger" ></i>
-                            <p>Customers</p>
-                        </a>
-                    </li>
-                    
-                    <li class="nav-item">
-                        <a href="{{ route('Citys') }}" class="nav-link">
-                            <i class="nav-icon far fa-circle text-danger" ></i>
-                            <p>Citys</p>
-                        </a>
-                    </li>
-                    
-                    <!-- Films -->
-                    <li class="nav-item">
-                        <a href="{{route('Films')}}" class="nav-link">
-                            <i class="nav-icon far fa-circle text-danger" ></i>
-                            <p>Films</p>
+                        <a href="{{ route('Actors') }}" class="nav-link">
+                            <i class="nav-icon far fa-circle text-danger"></i>
+                            <p>Actors</p>
                         </a>
                     </li>
 
-                    <!-- Actors -->
+                    <!-- Address -->
                     <li class="nav-item">
-                        <a href="{{route('Actors')}}" class="nav-link">
-                            <i class="nav-icon far fa-circle text-danger" ></i>
-                            <p>Actors</p>
+                        <a href="{{ route('Address') }}" class="nav-link">
+                            <i class="nav-icon far fa-circle text-danger"></i>
+                            <p>Address</p>
                         </a>
                     </li>
 
                     <!-- Categories -->
                     <li class="nav-item">
-                        <a href="{{route('Categories')}}" class="nav-link">
-                            <i class="nav-icon far fa-circle text-danger" ></i>
+                        <a href="{{ route('Categories') }}" class="nav-link">
+                            <i class="nav-icon far fa-circle text-danger"></i>
                             <p>Categories</p>
+                        </a>
+                    </li>
+
+                    <!-- Citys -->
+                    <li class="nav-item">
+                        <a href="{{ route('Citys') }}" class="nav-link">
+                            <i class="nav-icon far fa-circle text-danger"></i>
+                            <p>Citys</p>
+                        </a>
+                    </li>
+
+                    <!-- Customers -->
+                    <li class="nav-item">
+                        <a href="{{ route('Customers') }}" class="nav-link">
+                            <i class="nav-icon far fa-circle text-danger"></i>
+                            <p>Customers</p>
+                        </a>
+                    </li>
+
+                    <!-- Films -->
+                    <li class="nav-item">
+                        <a href="{{ route('Films') }}" class="nav-link">
+                            <i class="nav-icon far fa-circle text-danger"></i>
+                            <p>Films</p>
                         </a>
                     </li>
 
                     <!-- Inventory -->
                     <li class="nav-item">
-                        <a href="{{route('Inventory')}}" class="nav-link">
-                            <i class="nav-icon far fa-circle text-danger" ></i>
+                        <a href="{{ route('Inventory') }}" class="nav-link">
+                            <i class="nav-icon far fa-circle text-danger"></i>
                             <p>Inventory</p>
                         </a>
                     </li>
 
-                    <!-- Rentals -->
+                    <!-- Languages -->
                     <li class="nav-item">
-                        <a href="{{route('Rentals')}}" class="nav-link">
-                            <i class="nav-icon far fa-circle text-danger" ></i>
-                            <p>Rentals</p>
+                        <a href="{{ route('Languages') }}" class="nav-link">
+                            <i class="nav-icon far fa-circle text-danger"></i>
+                            <p>Languages</p>
                         </a>
                     </li>
 
                     <!-- Payments -->
                     <li class="nav-item">
-                        <a href="{{route('Payments')}}" class="nav-link">
-                            <i class="nav-icon far fa-circle text-danger" ></i>
+                        <a href="{{ route('Payments') }}" class="nav-link">
+                            <i class="nav-icon far fa-circle text-danger"></i>
                             <p>Payments</p>
+                        </a>
+                    </li>
+
+                    <!-- Rentals -->
+                    <li class="nav-item">
+                        <a href="{{ route('Rentals') }}" class="nav-link">
+                            <i class="nav-icon far fa-circle text-danger"></i>
+                            <p>Rentals</p>
                         </a>
                     </li>
 
                     <!-- Staff -->
                     <li class="nav-item">
-                        <a href="{{route('Staff')}}" class="nav-link">
-                            <i class="nav-icon far fa-circle text-danger" ></i>
+                        <a href="{{ route('Staff') }}" class="nav-link">
+                            <i class="nav-icon far fa-circle text-danger"></i>
                             <p>Staff</p>
                         </a>
                     </li>
 
                     <!-- Stores -->
                     <li class="nav-item">
-                        <a href="{{route('Stores')}}" class="nav-link">
-                            <i class="nav-icon far fa-circle text-danger" ></i>
+                        <a href="{{ route('Stores') }}" class="nav-link">
+                            <i class="nav-icon far fa-circle text-danger"></i>
                             <p>Stores</p>
                         </a>
                     </li>
+
                 </ul>
             </li>
         </ul>
