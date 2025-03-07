@@ -25,23 +25,21 @@ Route::get('/Address', function () {
     return view('Address');
 })->name('Address');
 
-Route::get('/Customers', function () {
-    return view('Customers');
-})->name('Customers');
-
 Route::get('/Categories', function () {
     return view('Categories');
 })->name('Categories');
-
 
 Route::get('/Citys', function () {
     return view('Citys');
 })->name('Citys');
 
+Route::get('/Customers', function () {
+    return view('Customers');
+})->name('Customers');
+
 Route::get('/Films', function () {
     return view('Films');
 })->name('Films');
-
 
 Route::get('/Inventory', function () {
     return view('Inventory');
@@ -54,10 +52,6 @@ Route::get('/Languages', function () {
 Route::get('/Payments', function () {
     return view('Payments');
 })->name('Payments');
-
-Route::get('/Stores', function () {
-    return view('Stores');
-})->name('Stores');
 
 Route::get('/Rentals', function () {
     return view('Rentals');
