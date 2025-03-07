@@ -29,6 +29,11 @@ Route::get('/Categories', function () {
     return view('Categories');
 })->name('Categories');
 
+
+Route::get('/Citys', function () {
+    return view('Citys');
+})->name('Citys');
+
 Route::get('/Films', function () {
     return view('Films');
 })->name('Films');

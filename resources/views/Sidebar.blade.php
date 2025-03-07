@@ -39,7 +39,14 @@
                             <p>Customers</p>
                         </a>
                     </li>
-
+                    
+                    <li class="nav-item">
+                        <a href="{{ route('Citys') }}" class="nav-link">
+                            <i class="nav-icon far fa-circle text-danger" ></i>
+                            <p>Citys</p>
+                        </a>
+                    </li>
+                    
                     <!-- Films -->
                     <li class="nav-item">
                         <a href="{{route('Films')}}" class="nav-link">
