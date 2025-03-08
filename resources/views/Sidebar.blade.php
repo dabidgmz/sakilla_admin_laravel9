@@ -74,9 +74,33 @@
 
                     <!-- Films -->
                     <li class="nav-item">
-                        <a href="{{ route('Films') }}" class="nav-link">
+                        <a href="{{ route('Flims') }}" class="nav-link">
                             <i class="nav-icon far fa-circle text-danger"></i>
-                            <p>Films</p>
+                            <p>Flims</p>
+                        </a>
+                    </li>
+
+                    <!-- Film Actors -->
+                    <li class="nav-item">
+                        <a href="{{ route('Flim_Actor') }}" class="nav-link">
+                            <i class="nav-icon far fa-circle text-danger"></i>
+                            <p>Flim Actors</p>
+                        </a>
+                    </li>
+
+                    <!-- Film Categories -->
+                    <li class="nav-item">
+                        <a href="{{ route('Flim_Category') }}" class="nav-link">
+                            <i class="nav-icon far fa-circle text-danger"></i>
+                            <p>Flimm Categories</p>
+                        </a>
+                    </li>
+
+                    <!-- Film Text -->
+                    <li class="nav-item">
+                        <a href="{{ route('Flim_text') }}" class="nav-link">
+                            <i class="nav-icon far fa-circle text-danger"></i>
+                            <p>Flimm Text</p>
                         </a>
                     </li>
 

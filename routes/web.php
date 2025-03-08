@@ -37,9 +37,21 @@ Route::get('/Customers', function () {
     return view('Customers');
 })->name('Customers');
 
-Route::get('/Films', function () {
-    return view('Films');
-})->name('Films');
+Route::get('/Flims', function () {
+    return view('Flims');
+})->name('Flims');
+
+Route::get('Flim_Actor', function () {
+    return view('Flim_Actor');
+})->name('Flim_Actor');
+
+Route::get('/Flim_Category', function () {
+    return view('Flim_Category');
+})->name('Flim_Category');
+
+Route::get('/Flim_text', function () {
+    return view('Flim_text');
+})->name('Flim_text');
 
 Route::get('/Inventory', function () {
     return view('Inventory');

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Address</title>
+    <title>Actors</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -15,15 +15,14 @@
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
 
-    @include('Navbar')
-    @include('Addres.add_address_modal')
+   @include('Navbar')
 
     <!-- Main Sidebar Container -->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <!-- Brand Logo -->
-        <a href="{{ route('index') }}" class="brand-link">
+        <a href="index3.html" class="brand-link">
             <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-            <span class="brand-text font-weight-light">Movie Rental</span>
+            <span class="brand-text font-weight-light"> Movie Rental</span>
         </a>
 
         @include('Sidebar')
@@ -37,12 +36,12 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0">Address Management</h1>
+                        <h1 class="m-0">Flim Text Management</h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active">Address</li>
+                            <li class="breadcrumb-item active">Actors</li>
                         </ol>
                     </div><!-- /.col -->
                 </div><!-- /.row -->
@@ -55,48 +54,36 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-12">
-                        <!-- Address Table -->
+                        <!-- Actors Table -->
                         <div class="card">
                             <div class="card-header d-flex justify-content-between align-items-center">
-                                <h5 class="m-0">Address List</h5>
-                                <button class="btn btn-success mb-3" data-toggle="modal" data-target="#actorModal">
-                                    <i class="fas fa-plus"></i> Agregar Address
-                                </button>
+                                <h5 class="m-0">Flim Text List</h5>
                             </div>
                             <div class="card-body">
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>Address</th>
-                                            <th>District</th>
-                                            <th>City</th>
-                                            <th>Postal Code</th>
-                                            <th>Phone</th>
-                                            <th>Location</th>
-                                            <th>Actions</th>
+                                            <th>Title</th>
+                                            <th>Description</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {{--@foreach ($addresses as $address)
+                                       {{-- @foreach ($flim_text as $Flim_txt)
                                             <tr>
-                                                <td>{{ $address->address_id }}</td>
-                                                <td>{{ $address->address }}</td>
-                                                <td>{{ $address->district }}</td>
-                                                <td>{{ $address->city->name }}</td>
-                                                <td>{{ $address->postal_code }}</td>
-                                                <td>{{ $address->phone }}</td>
-                                                <td>{{ $address->location }}</td>
+                                                <td>{{ $Flim_txt->flim_id}}</td>
+                                                <td>{{ $Flim_txt->title}}</td>
+                                                <td>{{ $Flim_txt->description}}</td>
                                                 <td>
-                                                    <a href="{{ route('addresses.edit', $address->address_id) }}" class="btn btn-warning btn-sm">Edit</a>
-                                                    <form action="{{ route('addresses.destroy', $address->address_id) }}" method="POST" style="display:inline;">
+                                                    <a href="{{ route('actors.edit', $actor->actor_id) }}" class="btn btn-warning btn-sm">Edit</a>
+                                                    <form action="{{ route('actors.destroy', $actor->actor_id) }}" method="POST" style="display:inline;">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                                                     </form>
                                                 </td>
                                             </tr>
-                                        @endforeach--}}
+                                        @endforeach --}}
                                     </tbody>
                                 </table>
                             </div>
@@ -104,6 +91,7 @@
                     </div>
                 </div>
                 <!-- /.row -->
+
             </div><!-- /.container-fluid -->
         </div>
         <!-- /.content -->
@@ -111,14 +99,18 @@
     <!-- /.content-wrapper -->
 
     @include('ControlSidebar')
-    @include('Footer')
 
+    @include('Footer')
 </div>
 <!-- ./wrapper -->
 
 <!-- REQUIRED SCRIPTS -->
+
+<!-- jQuery -->
 <script src="plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- AdminLTE App -->
 <script src="dist/js/adminlte.min.js"></script>
 </body>
 </html>
