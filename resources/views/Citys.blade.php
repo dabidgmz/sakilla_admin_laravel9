@@ -11,8 +11,6 @@
     <link rel="stylesheet" href="{{ asset('plugins/fontawesome-free/css/all.min.css') }}">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('dist/css/adminlte.min.css') }}">
-    <!-- JQVMap -->
-    <link rel="stylesheet" href="{{ asset('plugins/jqvmap/jqvmap.min.css') }}">
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -57,14 +55,13 @@
                                 <h3 class="card-title">List of Cities and Countries</h3>
                             </div>
                             <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table table-bordered table-striped">
+                                <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                                    <table class="table table-bordered table-striped" style="width: 100%;">
                                         <thead>
                                             <tr>
                                                 <th>#</th>
                                                 <th>City Name</th>
                                                 <th>Country</th>
-                                                <th>Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -73,13 +70,6 @@
                                                     <td>{{ $city->city_id }}</td>
                                                     <td>{{ $city->city }}</td>
                                                     <td>{{ $city->country->country }}</td>
-                                                    <td>
-                                                        <button class="btn btn-info btn-sm view-details"
-                                                            data-country="{{ $city->country->country }}"
-                                                            data-country-id="{{ $city->country->iso_code }}">
-                                                            View Details
-                                                        </button>
-                                                    </td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
@@ -103,20 +93,6 @@
                                 </li>
                             </ul>
                         </div>
-
-                        <!-- Sección para mostrar detalles del país -->
-                        <div id="country-details" class="card mt-4" style="display: none;">
-                            <div class="card-header bg-info text-white">
-                                <h3 class="card-title">Country Details</h3>
-                            </div>
-                            <div class="card-body">
-                                <p><strong>Country:</strong> <span id="detail-country"></span></p>
-
-                                <!-- Mapa dinámico -->
-                                <div id="map-container" style="height: 400px; width: 100%;"></div>
-                            </div>
-                        </div>
-
                     </div>
                 </div>
             </div>
@@ -131,63 +107,6 @@
 <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
 <script src="{{ asset('plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ asset('dist/js/adminlte.min.js') }}"></script>
-
-<!-- JQVMap -->
-<script src="{{ asset('plugins/jqvmap/jquery.vmap.min.js') }}"></script>
-<script src="{{ asset('plugins/jqvmap/maps/jquery.vmap.world.js') }}"></script>
-
-<!-- Contenedor para el mapa -->
-<script>
-    // Inicializar el mapa
-    function initMap() {
-        $('#map-container').vectorMap({
-            map: 'world_en',  // Mapa mundial
-            backgroundColor: '#ffffff',  // Color de fondo
-            color: '#e4e4e4',  // Color por defecto de los países
-            hoverOpacity: 0.7,  // Opacidad al pasar el mouse sobre un país
-            selectedColor: '#ff0000',  // Color cuando se selecciona un país
-            enableZoom: true,  // Habilitar zoom
-            showTooltip: true,  // Mostrar tooltip con el nombre del país
-            onRegionClick: function(event, code, region) {
-                // Llamada cuando se hace clic en un país
-                alert('Has seleccionado: ' + region);
-            }
-        });
-    }
-
-    // Función para resaltar todos los países correspondientes al país seleccionado
-    function highlightCountry(countryCode) {
-        // Resaltar todos los países con el código de país seleccionado
-        $('#map-container').vectorMap('set', 'focus', countryCode);
-        $('#map-container').vectorMap('set', 'regionStyle', {
-            initial: {
-                fill: '#ff0000', // Color rojo al seleccionar el país
-                stroke: '#000000', // Contorno negro
-                "stroke-width": 1 // Grosor del contorno
-            }
-        });
-    }
-
-    // Función para mostrar los detalles del país y resaltar el contorno
-    function showCountryDetails(countryName, countryCode) {
-        // Mostrar la sección de detalles
-        $('#country-details').show();
-        $('#detail-country').text(countryName);
-
-        // Resaltar todos los países que coincidan con el código ISO
-        highlightCountry(countryCode);
-    }
-
-    // Añadir el evento de clic en el botón de "View Details"
-    $(document).on('click', '.view-details', function() {
-        var countryName = $(this).data('country');
-        var countryCode = $(this).data('country-id');
-        showCountryDetails(countryName, countryCode);
-    });
-
-    // Inicializar el mapa al cargar la página
-    initMap();
-</script>
 
 </body>
 </html>
