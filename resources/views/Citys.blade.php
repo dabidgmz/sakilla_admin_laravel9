@@ -55,6 +55,18 @@
                                 <h3 class="card-title">List of Cities and Countries</h3>
                             </div>
                             <div class="card-body">
+                            <div class="mb-3 p-3 bg-light rounded shadow-sm d-flex justify-content-between align-items-center">
+                                    <form action="{{ route('citys.index') }}" method="GET" class="w-100">
+                                        <div class="input-group">
+                                            <input type="text" name="search" class="form-control rounded-left" placeholder="Search categories..." value="{{ request('search') }}">
+                                            <div class="input-group-append">
+                                                <button type="submit" class="btn btn-primary rounded-right">
+                                                    <i class="fas fa-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
                                 <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
                                     <table class="table table-bordered table-striped" style="width: 100%;">
                                         <thead>

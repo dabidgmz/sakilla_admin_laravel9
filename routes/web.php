@@ -32,12 +32,14 @@ Route::get('/Address', function () {
 // })->name('Categories');
 
 Route::get('/Categories',[CategoryController::class,'index'])->name('Categories');
+Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
 
 // Route::get('/Citys', function () {
 //     return view('Citys');
 // })->name('Citys');
 
 Route::get('/Citys',[CityController::class,'index'])->name('Citys');
+Route::get('/citys', [CityController::class, 'index'])->name('citys.index');
 
 Route::get('/Customers', function () {
     return view('Customers');

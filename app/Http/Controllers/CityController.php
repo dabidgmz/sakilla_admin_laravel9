@@ -4,14 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Models\City;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 class CityController extends Controller
 {
-    public function index(){
-        $cities = City::with("country")->get();
+    public function index(Request $request){
         $perPage = 50; 
-        $cities = City::with('country')->paginate($perPage);
+        $query = City::with("country");
+
+        if ($request->has('search')) {
+            $query->where('city', 'like', '%' . $request->search . '%');
+        }
+        
+        $cities = $query->paginate($perPage);
+
         return view("Citys", compact("cities"));
     }
 }
