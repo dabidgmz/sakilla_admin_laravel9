@@ -54,29 +54,47 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">List of Categories</h3>
-                            </div>
-                            <div class="card-body">
-                                <table class="table table-bordered table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Name</th>                                            
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                       @foreach($categories as $category)
-                                            <tr>
-                                                <td>{{ $category->category_id }}</td>
-                                                <td>{{ $category->name }}</td>                                                
-                                            </tr>
-                                        @endforeach 
-                                    </tbody>
-                                </table>
-                            </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">List of Categories</h3>
                         </div>
+                        <div class="card-body">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Name</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                @foreach($categories as $category)
+                                        <tr>
+                                            <td>{{ $category->category_id }}</td>
+                                            <td>{{ $category->name }}</td>
+                                        </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="card-footer clearfix">
+                            <ul class="pagination pagination-sm m-0 float-right">
+                                <li class="page-item {{ $categories->onFirstPage() ? 'disabled' : '' }}">
+                                    <a class="page-link" href="{{ $categories->previousPageUrl() }}">&laquo;</a>
+                                </li>
+                                
+                                @foreach ($categories->getUrlRange(1, $categories->lastPage()) as $page => $url)
+                                    <li class="page-item {{ $page == $categories->currentPage() ? 'active' : '' }}">
+                                        <a class="page-link" href="{{ $url }}">{{ $page }}</a>
+                                    </li>
+                                @endforeach
+
+                                <li class="page-item {{ $categories->hasMorePages() ? '' : 'disabled' }}">
+                                    <a class="page-link" href="{{ $categories->nextPageUrl() }}">&raquo;</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
                     </div>
                 </div>
             </div><!-- /.container-fluid -->
