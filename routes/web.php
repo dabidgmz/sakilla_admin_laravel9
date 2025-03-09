@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CityController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,13 +27,17 @@ Route::get('/Address', function () {
     return view('Address');
 })->name('Address');
 
-Route::get('/Categories', function () {
-    return view('Categories');
-})->name('Categories');
+// Route::get('/Categories', function () {
+//     return view('Categories');
+// })->name('Categories');
 
-Route::get('/Citys', function () {
-    return view('Citys');
-})->name('Citys');
+Route::get('/Categories',[CategoryController::class,'index'])->name('Categories');
+
+// Route::get('/Citys', function () {
+//     return view('Citys');
+// })->name('Citys');
+
+Route::get('/Citys',[CityController::class,'index'])->name('Citys');
 
 Route::get('/Customers', function () {
     return view('Customers');

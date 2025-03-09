@@ -15,4 +15,12 @@ class City extends Model
         'country_id',
         'last_update',
     ];
+
+    protected $primaryKey = 'city_id';
+
+    protected $table= 'city';
+
+    public function country(){
+        return $this->belongsTo(Country::class, 'country_id', 'country_id');
+    }
 }

@@ -63,25 +63,16 @@
                                     <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>Name</th>
-                                            <th>Actions</th>
+                                            <th>Name</th>                                            
                                         </tr>
                                     </thead>
                                     <tbody>
-                                       {{-- @foreach($categories as $category)
+                                       @foreach($categories as $category)
                                             <tr>
                                                 <td>{{ $category->category_id }}</td>
-                                                <td>{{ $category->name }}</td>
-                                                <td>
-                                                    <a href="{{ route('categories.edit', $category->category_id) }}" class="btn btn-warning btn-sm">Edit</a>
-                                                    <form action="{{ route('categories.destroy', $category->category_id) }}" method="POST" style="display:inline;">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                                                    </form>
-                                                </td>
+                                                <td>{{ $category->name }}</td>                                                
                                             </tr>
-                                        @endforeach --}}
+                                        @endforeach 
                                     </tbody>
                                 </table>
                             </div>

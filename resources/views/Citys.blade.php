@@ -66,7 +66,7 @@
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <!-- <tbody>
                                         <tr>
                                             <td>1</td>
                                             <td>New York</td>
@@ -132,9 +132,9 @@
                                                 </button>
                                             </td>
                                         </tr>
-                                    </tbody>
-                                    <!-- <tbody>
-                                        {{--@foreach($cities as $city)
+                                    </tbody> -->
+                                    <tbody>
+                                        @foreach($cities as $city)
                                             <tr>
                                                 <td>{{ $city->city_id }}</td>
                                                 <td>{{ $city->city }}</td>
@@ -148,8 +148,8 @@
                                                     </button>
                                                 </td>
                                             </tr>
-                                        @endforeach --}}
-                                    </tbody> -->
+                                        @endforeach
+                                    </tbody> 
                                 </table>
                             </div>
                         </div>

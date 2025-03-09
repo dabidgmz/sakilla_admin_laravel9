@@ -14,4 +14,6 @@ class Category extends Model
         'name',
         'last_update',
     ];
+
+    protected $table= 'category';
 }
