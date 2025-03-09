@@ -57,101 +57,51 @@
                                 <h3 class="card-title">List of Cities and Countries</h3>
                             </div>
                             <div class="card-body">
-                                <table class="table table-bordered table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>City Name</th>
-                                            <th>Country</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <!-- <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>New York</td>
-                                            <td>United States</td>
-                                            <td>
-                                                <button class="btn btn-info btn-sm view-details" 
-                                                    data-city="New York" 
-                                                    data-country="United States" 
-                                                    data-country-id="US">
-                                                    View Details
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>2</td>
-                                            <td>London</td>
-                                            <td>United Kingdom</td>
-                                            <td>
-                                                <button class="btn btn-info btn-sm view-details" 
-                                                    data-city="London" 
-                                                    data-country="United Kingdom" 
-                                                    data-country-id="GB">
-                                                    View Details
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>3</td>
-                                            <td>Tokyo</td>
-                                            <td>Japan</td>
-                                            <td>
-                                                <button class="btn btn-info btn-sm view-details" 
-                                                    data-city="Tokyo" 
-                                                    data-country="Japan" 
-                                                    data-country-id="JP">
-                                                    View Details
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>4</td>
-                                            <td>Paris</td>
-                                            <td>France</td>
-                                            <td>
-                                                <button class="btn btn-info btn-sm view-details" 
-                                                    data-city="Paris" 
-                                                    data-country="France" 
-                                                    data-country-id="FR">
-                                                    View Details
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>5</td>
-                                            <td>Berlin</td>
-                                            <td>Germany</td>
-                                            <td>
-                                                <button class="btn btn-info btn-sm view-details" 
-                                                    data-city="Berlin" 
-                                                    data-country="Germany" 
-                                                    data-country-id="DE">
-                                                    View Details
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    </tbody> -->
-                                    <tbody>
-                                        @foreach($cities as $city)
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
                                             <tr>
-                                                <td>{{ $city->city_id }}</td>
-                                                <td>{{ $city->city }}</td>
-                                                <td>{{ $city->country->country }}</td>
-                                                <td>
-                                                    <button class="btn btn-info btn-sm view-details"
-                                                        data-city="{{ $city->city }}"
-                                                        data-country="{{ $city->country->country }}"
-                                                        data-country-id="{{ $city->country->country_id }}">
-                                                        View Details
-                                                    </button>
-                                                </td>
+                                                <th>#</th>
+                                                <th>City Name</th>
+                                                <th>Country</th>
+                                                <th>Actions</th>
                                             </tr>
-                                        @endforeach
-                                    </tbody> 
-                                </table>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($cities as $city)
+                                                <tr>
+                                                    <td>{{ $city->city_id }}</td>
+                                                    <td>{{ $city->city }}</td>
+                                                    <td>{{ $city->country->country }}</td>
+                                                    <td>
+                                                        <button class="btn btn-info btn-sm view-details"
+                                                            data-country="{{ $city->country->country }}"
+                                                            data-country-id="{{ $city->country->iso_code }}">
+                                                            View Details
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
+                        </div>
+                        <!-- Paginación fuera de la tabla -->
+                        <div class="card-footer">
+                            <ul class="pagination pagination-sm m-0 float-right">
+                                <li class="page-item {{ $cities->onFirstPage() ? 'disabled' : '' }}">
+                                    <a class="page-link" href="{{ $cities->previousPageUrl() }}">&laquo;</a>
+                                </li>
+                                @foreach ($cities->getUrlRange(1, $cities->lastPage()) as $page => $url)
+                                    <li class="page-item {{ $page == $cities->currentPage() ? 'active' : '' }}">
+                                        <a class="page-link" href="{{ $url }}">{{ $page }}</a>
+                                    </li>
+                                @endforeach
+                                <li class="page-item {{ $cities->hasMorePages() ? '' : 'disabled' }}">
+                                    <a class="page-link" href="{{ $cities->nextPageUrl() }}">&raquo;</a>
+                                </li>
+                            </ul>
                         </div>
 
                         <!-- Sección para mostrar detalles del país -->
@@ -160,12 +110,10 @@
                                 <h3 class="card-title">Country Details</h3>
                             </div>
                             <div class="card-body">
-                                <p><strong>City:</strong> <span id="detail-city"></span></p>
                                 <p><strong>Country:</strong> <span id="detail-country"></span></p>
-                                <p><strong>Country Code:</strong> <span id="detail-country-id"></span></p>
-                                
+
                                 <!-- Mapa dinámico -->
-                                <div id="map-container" style="height: 300px; width: 100%;"></div>
+                                <div id="map-container" style="height: 400px; width: 100%;"></div>
                             </div>
                         </div>
 
@@ -184,40 +132,62 @@
 <script src="{{ asset('plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ asset('dist/js/adminlte.min.js') }}"></script>
 
-<!-- JQVMap Scripts -->
+<!-- JQVMap -->
 <script src="{{ asset('plugins/jqvmap/jquery.vmap.min.js') }}"></script>
 <script src="{{ asset('plugins/jqvmap/maps/jquery.vmap.world.js') }}"></script>
 
+<!-- Contenedor para el mapa -->
 <script>
-    $(document).ready(function () {
-        $(".view-details").click(function () {
-            var city = $(this).data("city");
-            var country = $(this).data("country");
-            var countryId = $(this).data("country-id");
-
-            $("#detail-city").text(city);
-            $("#detail-country").text(country);
-            $("#detail-country-id").text(countryId);
-
-            $("#country-details").fadeIn();
-
-            // Limpiar y cargar nuevo mapa con colores oscuros
-            $('#map-container').html('');
-            $('#map-container').vectorMap({
-                map: 'world_en',
-                backgroundColor: '#000000', 
-                color: '#444', 
-                hoverColor: '#ffcc00',
-                selectedColor: '#ff0000', 
-                borderColor: '#ffffff', 
-                enableZoom: true,
-                showTooltip: true,
-                selectedRegions: [countryId]
-            });
+    // Inicializar el mapa
+    function initMap() {
+        $('#map-container').vectorMap({
+            map: 'world_en',  // Mapa mundial
+            backgroundColor: '#ffffff',  // Color de fondo
+            color: '#e4e4e4',  // Color por defecto de los países
+            hoverOpacity: 0.7,  // Opacidad al pasar el mouse sobre un país
+            selectedColor: '#ff0000',  // Color cuando se selecciona un país
+            enableZoom: true,  // Habilitar zoom
+            showTooltip: true,  // Mostrar tooltip con el nombre del país
+            onRegionClick: function(event, code, region) {
+                // Llamada cuando se hace clic en un país
+                alert('Has seleccionado: ' + region);
+            }
         });
-    });
-</script>
+    }
 
+    // Función para resaltar todos los países correspondientes al país seleccionado
+    function highlightCountry(countryCode) {
+        // Resaltar todos los países con el código de país seleccionado
+        $('#map-container').vectorMap('set', 'focus', countryCode);
+        $('#map-container').vectorMap('set', 'regionStyle', {
+            initial: {
+                fill: '#ff0000', // Color rojo al seleccionar el país
+                stroke: '#000000', // Contorno negro
+                "stroke-width": 1 // Grosor del contorno
+            }
+        });
+    }
+
+    // Función para mostrar los detalles del país y resaltar el contorno
+    function showCountryDetails(countryName, countryCode) {
+        // Mostrar la sección de detalles
+        $('#country-details').show();
+        $('#detail-country').text(countryName);
+
+        // Resaltar todos los países que coincidan con el código ISO
+        highlightCountry(countryCode);
+    }
+
+    // Añadir el evento de clic en el botón de "View Details"
+    $(document).on('click', '.view-details', function() {
+        var countryName = $(this).data('country');
+        var countryCode = $(this).data('country-id');
+        showCountryDetails(countryName, countryCode);
+    });
+
+    // Inicializar el mapa al cargar la página
+    initMap();
+</script>
 
 </body>
 </html>

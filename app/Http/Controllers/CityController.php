@@ -10,7 +10,8 @@ class CityController extends Controller
 {
     public function index(){
         $cities = City::with("country")->get();
-        Log::info($cities);
+        $perPage = 30; 
+        $cities = City::with('country')->paginate($perPage);
         return view("Citys", compact("cities"));
     }
 }
