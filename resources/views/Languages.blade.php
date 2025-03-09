@@ -60,76 +60,16 @@
                                     <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>Language</th>
-                                            <th>Actions</th>
+                                            <th>Language</th>                                            
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <!-- Datos Ficticios -->
-                                        <tr>
-                                            <td>1</td>
-                                            <td>English</td>
-                                            <td>
-                                                <a href="#" class="btn btn-warning btn-sm">
-                                                    <i class="fas fa-edit"></i> Edit
-                                                </a>
-                                                <form action="#" method="POST" style="display:inline;">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm">
-                                                        <i class="fas fa-trash"></i> Delete
-                                                    </button>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>2</td>
-                                            <td>Spanish</td>
-                                            <td>
-                                                <a href="#" class="btn btn-warning btn-sm">
-                                                    <i class="fas fa-edit"></i> Edit
-                                                </a>
-                                                <form action="#" method="POST" style="display:inline;">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm">
-                                                        <i class="fas fa-trash"></i> Delete
-                                                    </button>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>3</td>
-                                            <td>French</td>
-                                            <td>
-                                                <a href="#" class="btn btn-warning btn-sm">
-                                                    <i class="fas fa-edit"></i> Edit
-                                                </a>
-                                                <form action="#" method="POST" style="display:inline;">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm">
-                                                        <i class="fas fa-trash"></i> Delete
-                                                    </button>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>4</td>
-                                            <td>German</td>
-                                            <td>
-                                                <a href="#" class="btn btn-warning btn-sm">
-                                                    <i class="fas fa-edit"></i> Edit
-                                                </a>
-                                                <form action="#" method="POST" style="display:inline;">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm">
-                                                        <i class="fas fa-trash"></i> Delete
-                                                    </button>
-                                                </form>
-                                            </td>
-                                        </tr>
+                                        @foreach ($languages as $Language)
+                                            <tr>
+                                                <td>{{ $Language->language_id }}</td>
+                                                <td>{{ $Language->name }}</td>
+                                            </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>

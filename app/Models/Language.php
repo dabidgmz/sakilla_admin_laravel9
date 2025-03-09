@@ -13,4 +13,9 @@ class Language extends Model
         'name',
         'last_update',
     ];
+
+    protected $primaryKey='language_id';
+
+    protected $table='language';
+    
 }

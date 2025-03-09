@@ -15,4 +15,12 @@ class Actor extends Model
         'last_name',
         'last_update',
     ];
+
+    protected $primaryKey = 'actor_id';
+
+    protected $table='actor';
+
+    public function film_actor(){
+        return $this->hasMany(Flim_Actor::class,'actor_id');
+    }
 }

@@ -14,4 +14,8 @@ class Store extends Model
         'address_id',
         'last_update',
     ];
+
+    protected $table='store';
+
+    public $primaryKey='store_id';
 }

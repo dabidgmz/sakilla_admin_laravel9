@@ -65,27 +65,18 @@
                                             <th>Store ID</th>
                                             <th>Manager Staff ID</th>
                                             <th>Address ID</th>
-                                            <th>Last Update</th>
-                                            <th>Actions</th>
+                                            <th>Last Update</th>                                            
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {{-- @foreach ($stores as $store)
+                                        @foreach ($stores as $store)
                                             <tr>
                                                 <td>{{ $store->store_id }}</td>
                                                 <td>{{ $store->manager_staff_id }}</td>
                                                 <td>{{ $store->address_id }}</td>
-                                                <td>{{ $store->last_update }}</td>
-                                                <td>
-                                                    <a href="{{ route('stores.edit', $store->store_id) }}" class="btn btn-warning btn-sm">Edit</a>
-                                                    <form action="{{ route('stores.destroy', $store->store_id) }}" method="POST" style="display:inline;">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                                                    </form>
-                                                </td>
+                                                <td>{{ $store->last_update }}</td>                                                
                                             </tr>
-                                        @endforeach --}}
+                                        @endforeach
                                     </tbody>
                                 </table>
                                 </div>

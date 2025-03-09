@@ -13,4 +13,10 @@ class Flim_Category extends Model
         'category_id',
         'last_update',
     ];
+
+    protected $table = 'film_category';
+
+    public function category(){
+        return $this->belongsTo(Category::class,'category_id');
+    }
 }

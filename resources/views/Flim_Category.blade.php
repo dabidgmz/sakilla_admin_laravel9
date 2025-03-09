@@ -64,25 +64,16 @@
                                     <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>Category ID</th>
-                                            <th>Actions</th>
+                                            <th>Category ID</th>                                            
                                         </tr>
                                     </thead>
                                     <tbody>
-                                       {{-- @foreach ($flim_category as $Flim_Category)
+                                       @foreach ($flim_category as $Flim_Category)
                                             <tr>
-                                                <td>{{ $Flim_Category->flim_id}}</td>
-                                                <td>{{ $Flim_Category->category_id}}</td>
-                                                <td>
-                                                    <a href="{{ route('actors.edit', $actor->actor_id) }}" class="btn btn-warning btn-sm">Edit</a>
-                                                    <form action="{{ route('actors.destroy', $actor->actor_id) }}" method="POST" style="display:inline;">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                                                    </form>
-                                                </td>
+                                                <td>{{ $Flim_Category->film_id}}</td>
+                                                <td>{{ $Flim_Category->category_id}}</td>                                                
                                             </tr>
-                                        @endforeach --}}
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>

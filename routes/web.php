@@ -2,6 +2,10 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CityController;
+use App\Http\Controllers\FlimActorController;
+use App\Http\Controllers\FlimCategoryController;
+use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\StoreController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -49,13 +53,19 @@ Route::get('/Flims', function () {
     return view('Flims');
 })->name('Flims');
 
-Route::get('Flim_Actor', function () {
-    return view('Flim_Actor');
-})->name('Flim_Actor');
+// Route::get('Flim_Actor', function () {
+//     return view('Flim_Actor');
+// })->name('Flim_Actor');
 
-Route::get('/Flim_Category', function () {
-    return view('Flim_Category');
-})->name('Flim_Category');
+Route::get('/Flim_Actor',[FlimActorController::class,'index'])->name('Flim_Actor');
+Route::get('/flim_actor', [FlimActorController::class, 'index'])->name('flim_actor.index');
+
+// Route::get('/Flim_Category', function () {
+//     return view('Flim_Category');
+// })->name('Flim_Category');
+
+Route::get('/Flim_Category',[FlimCategoryController::class,'index'])->name('Flim_Category');
+Route::get('/flim_category', [FlimCategoryController::class, 'index'])->name('flim_category.index');
 
 Route::get('/Flim_text', function () {
     return view('Flim_text');
@@ -65,9 +75,11 @@ Route::get('/Inventory', function () {
     return view('Inventory');
 })->name('Inventory');
 
-Route::get('/Languages', function () {
-    return view('Languages');
-})->name('Languages');
+// Route::get('/Languages', function () {
+//     return view('Languages');
+// })->name('Languages');
+Route::get('/Languages',[LanguageController::class,'index'])->name('Languages');
+Route::get('/languages', [LanguageController::class, 'index'])->name('languages.index');
 
 Route::get('/Payments', function () {
     return view('Payments');
@@ -81,6 +93,9 @@ Route::get('/Staff', function () {
     return view('Staff');
 })->name('Staff');
 
-Route::get('/Stores', function () {
-    return view('Stores');
-})->name('Stores');
+// Route::get('/Stores', function () {
+//     return view('Stores');
+// })->name('Stores');
+
+Route::get('/Stores',[StoreController::class,'index'])->name('Stores');
+Route::get('/stores', [StoreController::class, 'index'])->name('stores.index');

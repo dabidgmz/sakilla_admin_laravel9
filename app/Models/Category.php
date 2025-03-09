@@ -16,4 +16,10 @@ class Category extends Model
     ];
 
     protected $table= 'category';
+
+    protected $primaryKey='category_id';
+
+    public function film_category(){
+        return $this->belongsTo(Flim_Category::class,'category_id');
+    }
 }

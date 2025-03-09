@@ -13,4 +13,10 @@ class Flim_Actor extends Model
         'flim_id',
         'last_update',
     ];
+
+    protected $table='film_actor';
+
+    public function actor(){
+        return $this->belongsTo(Actor::class,'actor_id');
+    }
 }
