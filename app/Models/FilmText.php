@@ -7,12 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class FilmText extends Model
 {
+
     use HasFactory;
 
     protected $table = 'film_text';
-    protected $primaryKey = 'flim_id';
+    protected $primaryKey = 'film_id';
     public $incrementing = false;
-    public $timestamps = false;
 
     protected $fillable = [
         'film_id',

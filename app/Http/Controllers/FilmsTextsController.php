@@ -18,13 +18,16 @@ class FilmsTextsController extends Controller
      * @param int page : The page number.
      * @return JsonResponse
      */
-    public function index(): JsonResponse {
-        // Get all film texts with pagination
-        $filmTexts = FilmText::paginate(20);
-
-        return response()->json($filmTexts);
+    public function index() {
+        // Obtener todos los textos de películas con paginación
+        $perPage = 50;
+        $filmTxt = FilmText::paginate($perPage);
+    
+        return view('Film_text', compact('filmTxt')); 
     }
-
+    
+    
+    
     /**
      * Get a film text by its film ID.
      *
@@ -49,19 +52,28 @@ class FilmsTextsController extends Controller
      * @param FilmTextPostRequest $request : The request object.
      * @return JsonResponse
      */
-    public function store(FilmTextPostRequest $request): JsonResponse {
-        // Validate the request data
-        $request->validated();
+    public function store(Request $request) {
+        // Valida los datos de entrada
 
-        // Create the film text
+        $validatedData = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+        ]);
+    
+        
+        $filmId = FilmText::latest()->first()->film_id; 
+    
+        // Crea el nuevo texto de la película
         $filmText = FilmText::create([
-            'film_id' => $request->input('film_id'),
+            'film_id' => $filmId, 
             'title' => $request->input('title'),
             'description' => $request->input('description'),
+            'last_update' => now(),
         ]);
-
-        return response()->json($filmText, 201);
+    
+        return redirect()->route('Film_text');
     }
+    
 
     /**
      * Update a film text by its film ID.

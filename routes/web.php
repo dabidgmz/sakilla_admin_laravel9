@@ -8,6 +8,7 @@ use App\Http\Controllers\CustomersController;
 use App\Http\Controllers\FilmsController;
 use App\Http\Controllers\FilmsActorsController;
 use App\Http\Controllers\FilmsCategoriesController;
+use App\Http\Controllers\FilmsTextsController;
 use App\Http\Controllers\LanguagesController;
 use App\Http\Controllers\StoresController;
 use Illuminate\Support\Facades\Route;
@@ -86,6 +87,7 @@ Route::delete('/films/{id}', [FilmsController::class, 'destroy'])->name('films.d
 //     return view('Flim_Actor');
 // })->name('Flim_Actor');
 
+#FilmsActors views
 Route::get('/Flim_Actor',[FilmsActorsController::class,'index'])->name('Flim_Actor');
 Route::get('/flim_actor', [FilmsActorsController::class, 'index'])->name('flim_actor.index');
 
@@ -93,12 +95,20 @@ Route::get('/flim_actor', [FilmsActorsController::class, 'index'])->name('flim_a
 //     return view('Flim_Category');
 // })->name('Flim_Category');
 
+#FilmsCategories views
 Route::get('/Flim_Category',[FilmsCategoriesController::class,'index'])->name('Flim_Category');
 Route::get('/flim_category', [FilmsCategoriesController::class, 'index'])->name('flim_category.index');
 
-Route::get('/Flim_text', function () {
-    return view('Flim_text');
-})->name('Flim_text');
+#FilmsText views
+Route::get('/Film_text', function () {
+    return view('Film_text');
+})->name('Film_text');
+
+Route::get('/Film_text', [FilmsTextsController::class, 'index'])->name('Film_text');
+Route::post('/Film_text', [FilmsTextsController::class, 'store'])->name('Film_text');
+Route::put('/film_text/{id}', [FilmsTextsController::class, 'update'])->name('film_text.update');
+Route::delete('/film_text/{id}', [FilmsTextsController::class, 'destroy'])->name('film_text.destroy');
+
 
 Route::get('/Inventory', function () {
     return view('Inventory');

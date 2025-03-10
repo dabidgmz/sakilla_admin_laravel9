@@ -99,9 +99,9 @@
 
                         <!-- Film Text -->
                         <li class="nav-item">
-                            <a href="{{ route('Flim_text') }}" class="nav-link">
+                            <a href="{{ route('Film_text') }}" class="nav-link">
                                 <i class="nav-icon far fa-circle text-danger"></i>
-                                <p>Flimm Text</p>
+                                <p>Film Text</p>
                             </a>
                         </li>
 
