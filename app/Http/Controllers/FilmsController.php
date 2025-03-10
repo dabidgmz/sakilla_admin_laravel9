@@ -23,37 +23,40 @@ class FilmsController extends Controller
      * @param int page : The page number.
      * @return JsonResponse
      */
-    public function index(): JsonResponse {
-        // Get paginated films
-        $films = Film::paginate(20);
+    public function index() {
+        // Obtener películas paginadas
+        $films = Film::paginate(50);
         $filmIds = $films->pluck('film_id');
-
-        // Get related data in separate queries
+    
+        // Obtener datos relacionados con consultas separadas
         $filmActors = FilmActor::whereIn('film_id', $filmIds)->get()->groupBy('film_id');
         $actors = Actor::whereIn('actor_id', $filmActors->flatten()->pluck('actor_id'))->get()->keyBy('actor_id');
-
+    
         $filmCategories = FilmCategory::whereIn('film_id', $filmIds)->get()->groupBy('film_id');
         $categories = Category::whereIn('category_id', $filmCategories->flatten()->pluck('category_id'))->get()->keyBy('category_id');
-
+    
         $filmTexts = FilmText::whereIn('film_id', $filmIds)->get()->keyBy('film_id');
-
-        // Construct response
+    
+        
         $films->transform(function ($film) use ($filmActors, $actors, $filmCategories, $categories, $filmTexts) {
-            $film->actors = $filmActors[$film->film_id]->map(function ($filmActor) use ($actors) {
+            // Verifica si la clave existe antes de acceder
+            $film->actors = isset($filmActors[$film->film_id]) ? $filmActors[$film->film_id]->map(function ($filmActor) use ($actors) {
                 return $actors[$filmActor->actor_id] ?? null;
-            })->filter()->values();
+            })->filter()->values() : collect();
 
-            $film->categories = $filmCategories[$film->film_id]->map(function ($filmCategory) use ($categories) {
+            $film->categories = isset($filmCategories[$film->film_id]) ? $filmCategories[$film->film_id]->map(function ($filmCategory) use ($categories) {
                 return $categories[$filmCategory->category_id] ?? null;
-            })->filter()->values();
+            })->filter()->values() : collect();
 
-            $film->text = $filmTexts[$film->film_id] ?? null;
+            $film->text = isset($filmTexts[$film->film_id]) ? $filmTexts[$film->film_id] : null;
 
             return $film;
         });
 
-        return response()->json($films);
+    
+        return view('Films', compact('films'));
     }
+        
 
     /**
      * Get a film by its ID.
@@ -96,7 +99,7 @@ class FilmsController extends Controller
      * @param FilmPostRequest $request : The request object.
      * @return JsonResponse
      */
-    public function store(FilmPostRequest $request): JsonResponse {
+    public function store(FilmPostRequest $request) {
         // Validate the request data
         $request->validated();
 
@@ -116,7 +119,7 @@ class FilmsController extends Controller
             'last_update' => now(),
         ]);
 
-        return response()->json($film, 201);
+        return redirect()->route('Films');
     }
 
     /**
@@ -126,34 +129,26 @@ class FilmsController extends Controller
      * @param int $id : The film ID.
      * @return JsonResponse
      */
-    public function update(FilmPutRequest $request, int $id): JsonResponse {
-        // Validate the request data
-        $request->validated();
-
-        // Check if at least one field is filled
-        if (empty($request->all())) {
-            return response()->json(['message' => 'You must specify at least one field to update.'], 400);
-        }
-
+    public function update(Request $request, int $id) {
         // Search the film by its ID
-        $film = Film::where('film_id', $id)->first();
+        $film = Film::findOrfail($id);
 
-        // If the film does not exist, return an error
-        if (!$film) {
-            return response()->json(['message' => 'Film not found.'], 404);
-        }
-
-        // Update only provided fields
-        $film->fill($request->only([
-            'title', 'description', 'release_year', 'language_id', 'original_language_id',
-            'rental_duration', 'rental_rate', 'length', 'replacement_cost',
-            'rating', 'special_features'
-        ]));
-
+        
+        $film->title = $request->input('title');
+        $film->description = $request->input('description');
+        $film->release_year = $request->input('release_year');
+        $film->language_id = $request->input('language_id');
+        $film->original_language_id = $request->input('original_language_id');
+        $film->rental_duration = $request->input('rental_duration');
+        $film->rental_rate = $request->input('rental_rate');
+        $film->length = $request->input('length');
+        $film->replacement_cost = $request->input('replacement_cost');
+        $film->rating = $request->input('rating');
+        $film->special_features = $request->input('special_features');
         $film->last_update = now();
         $film->save();
 
-        return response()->json($film);
+        return redirect()->route('Films');
     }
 
     /**
@@ -162,18 +157,10 @@ class FilmsController extends Controller
      * @param int $id : The film ID.
      * @return JsonResponse
      */
-    public function destroy(int $id): JsonResponse {
+    public function destroy(int $id) {
         // Search the film by its ID
         $film = Film::where('film_id', $id)->first();
-
-        // If the film does not exist, return an error
-        if (!$film) {
-            return response()->json(['message' => 'Film not found.'], 404);
-        }
-
-        // Delete the film
         $film->delete();
-
-        return response()->json(['message' => 'Film deleted.']);
+        return redirect()->route('Films');
     }
 }

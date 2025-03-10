@@ -5,6 +5,7 @@ use App\Http\Controllers\AddressesController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\CitiesController;
 use App\Http\Controllers\CustomersController;
+use App\Http\Controllers\FilmsController;
 use App\Http\Controllers\FilmsActorsController;
 use App\Http\Controllers\FilmsCategoriesController;
 use App\Http\Controllers\LanguagesController;
@@ -53,23 +54,15 @@ Route::put('/address/{id}', [AddressesController::class, 'update'])->name('addre
 
 Route::delete('/address/{id}', [AddressesController::class, 'destroy'])->name('address.destroy');
 
-
-
-
-// Route::get('/Categories', function () {
-//     return view('Categories');
-// })->name('Categories');
-
+#Categories views
 Route::get('/Categories',[CategoriesController::class,'index'])->name('Categories');
 Route::get('/categories', [CategoriesController::class, 'index'])->name('categories.index');
 
-// Route::get('/Citys', function () {
-//     return view('Citys');
-// })->name('Citys');
-
+#Cities views
 Route::get('/Citys',[CitiesController::class,'index'])->name('Citys');
 Route::get('/citys', [CitiesController::class, 'index'])->name('citys.index');
 
+#Customers views
 Route::get('/Customers', function () {
     return view('Customers');
 })->name('Customers');
@@ -79,9 +72,15 @@ Route::post('/Customers', [CustomersController::class, 'store'])->name('Customer
 Route::put('/customers/{id}', [CustomersController::class, 'update'])->name('customers.update');
 Route::delete('/customers/{id}', [CustomersController::class, 'destroy'])->name('customers.destroy');
 
-Route::get('/Flims', function () {
-    return view('Flims');
-})->name('Flims');
+#Films views
+Route::get('/Films', function () {
+    return view('Films');
+})->name('Films');
+
+Route::get('/Films', [FilmsController::class, 'index'])->name('Films');
+Route::post('/Films', [FilmsController::class, 'store'])->name('Films');
+Route::put('/films/{id}', [FilmsController::class, 'update'])->name('films.update');
+Route::delete('/films/{id}', [FilmsController::class, 'destroy'])->name('films.destroy');
 
 // Route::get('Flim_Actor', function () {
 //     return view('Flim_Actor');

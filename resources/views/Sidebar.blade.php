@@ -75,9 +75,9 @@
 
                         <!-- Films -->
                         <li class="nav-item">
-                            <a href="{{ route('Flims') }}" class="nav-link">
+                            <a href="{{ route('Films') }}" class="nav-link">
                                 <i class="nav-icon far fa-circle text-danger"></i>
-                                <p>Flims</p>
+                                <p>Films</p>
                             </a>
                         </li>
 

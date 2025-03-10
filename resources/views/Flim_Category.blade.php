@@ -63,7 +63,7 @@
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>
-                                            <th>#</th>
+                                            <th>Category</th>
                                             <th>Category ID</th>                                            
                                         </tr>
                                     </thead>

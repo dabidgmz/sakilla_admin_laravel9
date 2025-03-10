@@ -8,9 +8,9 @@
                 </button>
             </div>
 
-            <div class="modal-body">
-                {{-- <input type="hidden" name="_method" id="method_field" value="POST">
-                <input type="hidden" id="film_id" name="film_id"> --}}
+            <form id="filmsForm" method="POST" action="{{ route('Films') }}">
+            @csrf 
+            <div class="modal-body">                
                 <div class="form-group">
                     <label for="title">Title</label>
                     <input type="text" class="form-control" id="title" name="title" placeholder="Enter Title" value="{{ old('title') }}" required>
@@ -28,26 +28,13 @@
 
                 <div class="form-group">
                     <label for="language_id">Language</label>
-                    <select class="form-control" id="language_id" name="language_id">
-                        <option value="">Select Language</option>
-                        {{-- @foreach($languages as $language) --}}
-                            <option value="{{ $language->id }}" {{ old('language_id') == $language->id ? 'selected' : '' }}>
-                                {{ $language->name }}
-                            </option>
-                        {{-- @endforeach --}}
-                    </select>
+                    <input type="text" class="form-control" id="language_id" name="language_id" value="{{ old('language_id') }}">
+                    
                 </div>
 
                 <div class="form-group">
                     <label for="original_language_id">Original Language</label>
-                    <select class="form-control" id="original_language_id" name="original_language_id">
-                        <option value="">Select Original Language</option>
-                        {{-- @foreach($languages as $language) --}}
-                            <option value="{{ $language->id }}" {{ old('original_language_id') == $language->id ? 'selected' : '' }}>
-                                {{ $language->name }}
-                            </option>
-                        {{-- @endforeach --}}
-                    </select>
+                    <imput type="text" class="form-control" id="original_language_id" name="original_language_id" value="{{ old('original_language_id') }}">
                 </div>
 
                 <div class="form-group">
@@ -86,17 +73,13 @@
                     <label for="special_features">Special Features</label>
                     <input type="text" class="form-control" id="special_features" name="special_features" value="{{ old('special_features') }}">
                 </div>
-
-                <div class="form-group">
-                    <label for="last_update">Last Update</label>
-                    <input type="datetime-local" class="form-control" id="last_update" name="last_update" value="{{ old('last_update') }}">
-                </div>
             </div>
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                 <button type="submit" class="btn btn-primary">Save</button>
             </div>
+            </form>
         </div>
     </div>
 </div>

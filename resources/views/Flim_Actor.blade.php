@@ -63,7 +63,7 @@
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>
-                                            <th>#</th>
+                                            <th>Actor</th>
                                             <th>Film ID</th>
                                         </tr>
                                     </thead>
