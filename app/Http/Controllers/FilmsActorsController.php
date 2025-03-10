@@ -7,6 +7,7 @@ use App\Http\Requests\FilmActorPutRequest;
 use App\Models\FilmActor;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use App\Models\Flim_Actor;
 
 class FilmsActorsController extends Controller
 {
@@ -18,11 +19,12 @@ class FilmsActorsController extends Controller
      * @param int page : The page number.
      * @return JsonResponse
      */
-    public function index(): JsonResponse {
-        // Get all film-actor relationships with pagination
-        $filmActors = FilmActor::paginate(20);
+    public function index()
+    {
+        $perPage = 400;
+        $film_actors = FilmActor::with("actor")->paginate($perPage);
 
-        return response()->json($filmActors);
+        return view("Flim_Actor", compact("film_actors"));
     }
 
     /**

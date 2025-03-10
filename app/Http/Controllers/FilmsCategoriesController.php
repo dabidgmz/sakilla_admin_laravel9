@@ -18,11 +18,13 @@ class FilmsCategoriesController extends Controller
      * @param int page : The page number.
      * @return JsonResponse
      */
-    public function index(): JsonResponse {
+    public function index() {
         // Get all film-category relationships with pagination
-        $filmCategories = FilmCategory::paginate(20);
+        $perPage = 50;
+        $query = FilmCategory::with("category");
 
-        return response()->json($filmCategories);
+        $flim_category = $query->paginate($perPage);
+        return view("Flim_Category", compact("flim_category"));
     }
 
     /**
