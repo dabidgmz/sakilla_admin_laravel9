@@ -9,7 +9,7 @@ class Actor extends Model
 {
     use HasFactory;
 
-    protected $table = 'Actor';
+    protected $table = 'actor';
     protected $primaryKey = 'actor_id';
     public $timestamps = false;
 
@@ -24,7 +24,7 @@ class Actor extends Model
 
     /*----------------------------------------------------------------------------------------------------*/
 
-    public function filmActor() {
-        return $this->hasMany(FilmActor::class, 'actor_id', 'actor_id');
-    }
+    // public function filmActor() {
+    //     return $this->hasMany(FilmActor::class, 'actor_id', 'actor_id');
+    // }
 }

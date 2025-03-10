@@ -17,7 +17,7 @@
 
    @include('Navbar')
    @include('Actors.add_actor_modal')
-   @include('Actors.update_actor_modal')
+   @include('Actors.update')
 
     <!-- Main Sidebar Container -->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
@@ -64,7 +64,7 @@
                                     <i class="fas fa-plus"></i> Agregar Actor
                                 </button>
                             </div>
-                            <div class="card-body">
+                            <div  class="table-responsive" style="max-height: 400px; overflow-y: auto;">
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>
@@ -76,14 +76,16 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                       {{-- @foreach ($actors as $actor)
+                                    @foreach ($actors as $actor)
                                             <tr>
                                                 <td>{{ $actor->actor_id }}</td>
                                                 <td>{{ $actor->first_name }}</td>
                                                 <td>{{ $actor->last_name }}</td>
-                                                <td>{{ $actor->last_update }}</td>
                                                 <td>
-                                                    <a href="{{ route('actors.edit', $actor->actor_id) }}" class="btn btn-warning btn-sm">Edit</a>
+                                                <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#actorModalUpdate" onclick="editActor('{{ $actor->actor_id }}')">
+                                                    Edit
+                                                </button>
+                                                    <!-- Formulario de eliminación -->
                                                     <form action="{{ route('actors.destroy', $actor->actor_id) }}" method="POST" style="display:inline;">
                                                         @csrf
                                                         @method('DELETE')
@@ -91,9 +93,29 @@
                                                     </form>
                                                 </td>
                                             </tr>
-                                        @endforeach --}}
+                                    @endforeach
                                     </tbody>
                                 </table>
+                            </div>
+                            <div class="card-footer clearfix">
+                                    <ul class="pagination pagination-sm m-0 float-right">
+                                        {{-- Botón Anterior --}}
+                                        <li class="page-item {{ $actors->onFirstPage() ? 'disabled' : '' }}">
+                                            <a class="page-link" href="{{ $actors->previousPageUrl() }}">&laquo;</a>
+                                        </li>
+
+                                        {{-- Números de página --}}
+                                        @for ($page = 1; $page <= $actors->lastPage(); $page++)
+                                            <li class="page-item {{ $page == $actors->currentPage() ? 'active' : '' }}">
+                                                <a class="page-link" href="{{ $actors->url($page) }}">{{ $page }}</a>
+                                            </li>
+                                        @endfor
+
+                                        {{-- Botón Siguiente --}}
+                                        <li class="page-item {{ $actors->hasMorePages() ? '' : 'disabled' }}">
+                                            <a class="page-link" href="{{ $actors->nextPageUrl() }}">&raquo;</a>
+                                        </li>
+                                    </ul>
                             </div>
                         </div>
                     </div>
@@ -120,5 +142,7 @@
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->
 <script src="dist/js/adminlte.min.js"></script>
+</body>
+
 </body>
 </html>

@@ -1,11 +1,12 @@
 <?php
 
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\CityController;
-use App\Http\Controllers\FlimActorController;
-use App\Http\Controllers\FlimCategoryController;
-use App\Http\Controllers\LanguageController;
-use App\Http\Controllers\StoreController;
+use App\Http\Controllers\ActorsController;
+use App\Http\Controllers\CategoriesController;
+use App\Http\Controllers\CitiesController;
+use App\Http\Controllers\FilmsActorsController;
+use App\Http\Controllers\FilmsCategoriesController;
+use App\Http\Controllers\LanguagesController;
+use App\Http\Controllers\StoresController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,9 +24,14 @@ Route::get('/', function () {
     return view('index');
 })->name('index');
 
+# Actors
 Route::get('/Actors', function () {
     return view('Actors');
 })->name('Actors');
+
+Route::get('/Actors', [ActorsController::class, 'index'])->name('Actors');
+
+Route::post('/Actors', [ActorsController::class, 'store'])->name('Actors');
 
 Route::get('/Address', function () {
     return view('Address');
@@ -35,15 +41,15 @@ Route::get('/Address', function () {
 //     return view('Categories');
 // })->name('Categories');
 
-Route::get('/Categories',[CategoryController::class,'index'])->name('Categories');
-Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
+Route::get('/Categories',[CategoriesController::class,'index'])->name('Categories');
+Route::get('/categories', [CategoriesController::class, 'index'])->name('categories.index');
 
 // Route::get('/Citys', function () {
 //     return view('Citys');
 // })->name('Citys');
 
-Route::get('/Citys',[CityController::class,'index'])->name('Citys');
-Route::get('/citys', [CityController::class, 'index'])->name('citys.index');
+Route::get('/Citys',[CitiesController::class,'index'])->name('Citys');
+Route::get('/citys', [CitiesController::class, 'index'])->name('citys.index');
 
 Route::get('/Customers', function () {
     return view('Customers');
@@ -57,15 +63,15 @@ Route::get('/Flims', function () {
 //     return view('Flim_Actor');
 // })->name('Flim_Actor');
 
-Route::get('/Flim_Actor',[FlimActorController::class,'index'])->name('Flim_Actor');
-Route::get('/flim_actor', [FlimActorController::class, 'index'])->name('flim_actor.index');
+Route::get('/Flim_Actor',[FilmsActorsController::class,'index'])->name('Flim_Actor');
+Route::get('/flim_actor', [FilmsActorsController::class, 'index'])->name('flim_actor.index');
 
 // Route::get('/Flim_Category', function () {
 //     return view('Flim_Category');
 // })->name('Flim_Category');
 
-Route::get('/Flim_Category',[FlimCategoryController::class,'index'])->name('Flim_Category');
-Route::get('/flim_category', [FlimCategoryController::class, 'index'])->name('flim_category.index');
+Route::get('/Flim_Category',[FilmsCategoriesController::class,'index'])->name('Flim_Category');
+Route::get('/flim_category', [FilmsCategoriesController::class, 'index'])->name('flim_category.index');
 
 Route::get('/Flim_text', function () {
     return view('Flim_text');
@@ -78,8 +84,8 @@ Route::get('/Inventory', function () {
 // Route::get('/Languages', function () {
 //     return view('Languages');
 // })->name('Languages');
-Route::get('/Languages',[LanguageController::class,'index'])->name('Languages');
-Route::get('/languages', [LanguageController::class, 'index'])->name('languages.index');
+Route::get('/Languages',[LanguagesController::class,'index'])->name('Languages');
+Route::get('/languages', [LanguagesController::class, 'index'])->name('languages.index');
 
 Route::get('/Payments', function () {
     return view('Payments');
@@ -97,5 +103,5 @@ Route::get('/Staff', function () {
 //     return view('Stores');
 // })->name('Stores');
 
-Route::get('/Stores',[StoreController::class,'index'])->name('Stores');
-Route::get('/stores', [StoreController::class, 'index'])->name('stores.index');
+Route::get('/Stores',[StoresController::class,'index'])->name('Stores');
+Route::get('/stores', [StoresController::class, 'index'])->name('stores.index');

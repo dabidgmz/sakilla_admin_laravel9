@@ -7,11 +7,8 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-
-          {{--  <!-- <form id="actorForm" method="POST" action="{{ route('actors.store') }}"> --> --}}
-                <input type="hidden" name="_method" id="method_field" value="POST"> 
-                <input type="hidden" id="actor_id" name="actor_id"> 
-
+            <form id="actorForm" method="POST" action="{{ route('Actors') }}">
+                @csrf <!-- Protege contra ataques CSRF -->
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="first_name">Name</label>
@@ -28,7 +25,7 @@
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                     <button type="submit" class="btn btn-primary">Save</button>
                 </div>
-            <!-- </form> -->
+            </form>
         </div>
     </div>
 </div>
