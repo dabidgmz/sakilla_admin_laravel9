@@ -13,11 +13,13 @@ class LanguagesController extends Controller
      *
      * @return JsonResponse
      */
-    public function index(): JsonResponse {
+    public function index(){
         // Get all languages
-        $languages = Language::all();
+        $perPage = 5;
+        $query = Language::query();
+        $languages = $query->paginate($perPage);
 
-        return response()->json($languages);
+        return view("Languages",compact("languages"));
     }
 
     /**
