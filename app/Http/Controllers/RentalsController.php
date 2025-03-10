@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\RentalPostRequest;
 use App\Http\Requests\RentalPutRequest;
 use App\Models\Rental;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -18,11 +19,11 @@ class RentalsController extends Controller
      * @param int page : The page number.
      * @return JsonResponse
      */
-    public function index(): JsonResponse {
+    public function index(){
         // Get all rentals with pagination
-        $rentals = Rental::paginate(20);
-
-        return response()->json($rentals);
+        $perPage = 810;
+        $rentals = Rental::paginate($perPage);
+        return View('Rentals', compact('rentals'));
     }
 
     /**
@@ -49,21 +50,18 @@ class RentalsController extends Controller
      * @param RentalPostRequest $request : The request object.
      * @return JsonResponse
      */
-    public function store(RentalPostRequest $request): JsonResponse {
-        // Validate the request data
-        $request->validated();
-
-        // Create the rental
+    public function store(Request $request) {
+        
         $rental = Rental::create([
-            'rental_date' => $request->input('rental_date'),
+            'rental_date' => now(),
             'inventory_id' => $request->input('inventory_id'),
             'customer_id' => $request->input('customer_id'),
-            'return_date' => $request->input('return_date'),
+            'return_date' => now(),
             'staff_id' => $request->input('staff_id'),
             'last_update' => now(),
         ]);
 
-        return response()->json($rental, 201);
+        return redirect()->route('Rentals');
     }
 
     /**
@@ -73,10 +71,7 @@ class RentalsController extends Controller
      * @param int $id : The rental ID.
      * @return JsonResponse
      */
-    public function update(RentalPutRequest $request, int $id): JsonResponse {
-        // Validate the request data
-        $request->validated();
-
+    public function update(Request $request, int $id) {
         // Search the rental by its ID
         $rental = Rental::where('rental_id', $id)->first();
 
@@ -85,12 +80,16 @@ class RentalsController extends Controller
             return response()->json(['message' => 'Rental not found.'], 404);
         }
 
-        // Update only provided fields
-        $rental->fill($request->only(['rental_date', 'inventory_id', 'customer_id', 'return_date', 'staff_id']));
+
+        $rental->rental_date = now();
+        $rental->inventory_id = $request->input('inventory_id');
+        $rental->customer_id = $request->input('customer_id');
+        $rental->return_date = now();
+        $rental->staff_id = $request->input('staff_id');
         $rental->last_update = now();
         $rental->save();
 
-        return response()->json($rental);
+        return redirect()->route('Rentals');
     }
 
     /**
@@ -99,18 +98,10 @@ class RentalsController extends Controller
      * @param int $id : The rental ID.
      * @return JsonResponse
      */
-    public function destroy(int $id): JsonResponse {
+    public function destroy(int $id) {
         // Search the rental by its ID
         $rental = Rental::where('rental_id', $id)->first();
-
-        // If the rental does not exist, return an error
-        if (!$rental) {
-            return response()->json(['message' => 'Rental not found.'], 404);
-        }
-
-        // Delete the rental
         $rental->delete();
-
-        return response()->json(['message' => 'Rental deleted.']);
+        return redirect()->route('Rentals');
     }
 }

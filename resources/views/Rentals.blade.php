@@ -57,9 +57,14 @@
                         <div class="card">
                             <div class="card-header">
                                 <h3 class="card-title">Rental Records</h3>
+                                <div class="text-center">
+                                    <button class="btn btn-success" data-toggle="modal" data-target="#addRentalModal">
+                                        <i class="fas fa-plus"></i> Add Payment
+                                    </button>
+                                </div>
                             </div>
                             <!-- /.card-header -->
-                            <div class="card-body">
+                            <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
                                 <table class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
@@ -74,7 +79,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {{--@foreach ($rentals as $rental)
+                                        @foreach ($rentals as $rental)
                                             <tr>
                                                 <td>{{ $rental->rental_id }}</td>
                                                 <td>{{ $rental->rental_date }}</td>
@@ -84,19 +89,48 @@
                                                 <td>{{ $rental->staff_id }}</td>
                                                 <td>{{ $rental->last_update }}</td>
                                                 <td>
-                                                    <a href="{{ route('rentals.edit', $rental->rental_id) }}" class="btn btn-warning btn-sm">Edit</a>
-                                                    <form action="{{ route('rentals.destroy', $rental->rental_id) }}" method="POST" style="display:inline;">
+                                                    <a  class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editRentalModal"
+                                                        data-rental_id="{{ $rental->rental_id }}""
+                                                        data-inventory_id="{{$rental->inventory_id }}"
+                                                        data-customer_id="{{ $rental->customer_id }}"
+                                                        data-return_date="{{ $rental->return_date }}"
+                                                        data-staff_id="{{ $rental->staff_id }}"">
+                                                        <i class="fas fa-edit"></i> Edit
+                                                    </a>
+                                                    <form action="{{ route('rentals.destroy', $rental->rental_id) }}" method="POST" style="display: inline-block;">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                                        <button type="submit" class="btn btn-danger btn-sm">
+                                                            <i class="fas fa-trash"></i> Delete
+                                                        </button>
                                                     </form>
                                                 </td>
                                             </tr>
-                                        @endforeach --}}
+                                        @endforeach 
                                     </tbody>
                                 </table>
                             </div>
                             <!-- /.card-body -->
+                            <div class="card-footer clearfix">
+                                    <ul class="pagination pagination-sm m-0 float-right">
+                                        {{-- Botón Anterior --}}
+                                        <li class="page-item {{ $rentals->onFirstPage() ? 'disabled' : '' }}">
+                                            <a class="page-link" href="{{ $rentals->previousPageUrl() }}">&laquo;</a>
+                                        </li>
+
+                                        {{-- Números de página --}}
+                                        @for ($page = 1; $page <= $rentals->lastPage(); $page++)
+                                            <li class="page-item {{ $page == $rentals->currentPage() ? 'active' : '' }}">
+                                                <a class="page-link" href="{{ $rentals->url($page) }}">{{ $page }}</a>
+                                            </li>
+                                        @endfor
+
+                                        {{-- Botón Siguiente --}}
+                                        <li class="page-item {{ $rentals->hasMorePages() ? '' : 'disabled' }}">
+                                            <a class="page-link" href="{{ $rentals->nextPageUrl() }}">&raquo;</a>
+                                        </li>
+                                    </ul>
+                            </div>
                         </div>
                         <!-- /.card -->
                     </div>
@@ -113,6 +147,105 @@
 </div>
 <!-- ./wrapper -->
 
+<!-- Modal -->
+<div class="modal fade" id="addRentalModal" tabindex="-1" role="dialog" aria-labelledby="addRentalModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addRentalModalLabel">Add New Rental</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="{{ route('rentals.store') }}" method="POST">
+                @csrf
+                <div class="modal-body">
+                
+                    <!-- Inventory ID -->
+                    <div class="form-group">
+                        <label for="inventory_id">Inventory ID</label>
+                        <input type="number" class="form-control" id="inventory_id" name="inventory_id" value="{{ old('$rental->inventory_id') }}" required>
+                    </div>
+
+                    <!-- Customer ID -->
+                    <div class="form-group">
+                        <label for="customer_id">Customer ID</label>
+                        <input type="number" class="form-control" id="customer_id" name="customer_id" value="{{ old('$rental->customer_id') }}" required>
+                    </div>
+
+                    <!-- Staff ID -->
+                    <div class="form-group">
+                        <label for="staff_id">Staff ID</label>
+                        <input type="number" class="form-control" id="staff_id" name="staff_id" value="{{ old('$rental->staff_id') }}" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save Rental</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="editRentalModal" tabindex="-1" role="dialog" aria-labelledby="updateRentalModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateRentalLabel">Update Payment</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="{{ route('rentals.update', $rental->rental_id) }}" method="POST">
+                @csrf
+                @method('PUT')
+                <div class="modal-body">
+                                    
+                    <!-- Inventory ID -->
+                    <div class="form-group">
+                        <label for="inventory_id">Inventory ID</label>
+                        <input type="number" class="form-control" id="inventory_id" name="inventory_id" value="{{ old('$rental->inventory_id') }}" required>
+                    </div>
+
+                    <!-- Customer ID -->
+                    <div class="form-group">
+                        <label for="customer_id">Customer ID</label>
+                        <input type="number" class="form-control" id="customer_id" name="customer_id" value="{{ old('$rental->customer_id') }}" required>
+                    </div>
+
+                    <!-- Staff ID -->
+                    <div class="form-group">
+                        <label for="staff_id">Staff ID</label>
+                        <input type="number" class="form-control" id="staff_id" name="staff_id" value="{{ old('$rental->staff_id') }}" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Update Rental</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#editRentalModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var rental_id = button.data('rental_id');
+        var inventory_id = button.data('inventory_id');
+        var customer_id = button.data('customer_id');
+        var staff_id = button.data('staff_id');
+        
+        var modal = $(this);
+        modal.find('.modal-body #rental_id').val(rental_id);
+        modal.find('.modal-body #edit_inventory_id').val(inventory_id);
+        modal.find('.modal-body #edit_customer_id').val(customer_id);
+        modal.find('.modal-body #edit_staff_id').val(staff_id);
+        modal.find('form').attr('action', '/payments/' + payment_id );
+    });
+</script>
 <!-- REQUIRED SCRIPTS -->
 
 <!-- jQuery -->

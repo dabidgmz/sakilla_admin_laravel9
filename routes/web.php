@@ -142,6 +142,11 @@ Route::get('/Rentals', function () {
     return view('Rentals');
 })->name('Rentals');
 
+Route::get('/Rentals', [RentalsController::class, 'index'])->name('Rentals');
+Route::post('/Rentals', [RentalsController::class, 'store'])->name('Rentals');
+Route::put('/rentals/{id}', [RentalsController::class, 'update'])->name('rentals.update');
+Route::delete('/rentals/{id}', [RentalsController::class, 'destroy'])->name('rentals.destroy');
+
 Route::get('/Staff', function () {
     return view('Staff');
 })->name('Staff');

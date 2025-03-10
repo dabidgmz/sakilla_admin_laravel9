@@ -9,7 +9,7 @@ class Rental extends Model
 {
     use HasFactory;
 
-    protected $table = 'Rental';
+    protected $table = 'rental';
     protected $primaryKey = 'rental_id';
     public $timestamps = false;
 
