@@ -13,11 +13,17 @@ class CategoriesController extends Controller
      *
      * @return JsonResponse
      */
-    public function index(): JsonResponse {
+    public function index(Request $request) {
         // Get all categories
-        $categories = Category::all();
-
-        return response()->json($categories);
+        $query = Category::query();
+    
+        if ($request->has('search')) {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
+    
+        $categories = $query->paginate(5); 
+    
+        return view('Categories', compact('categories'));
     }
 
     /**
@@ -26,7 +32,7 @@ class CategoriesController extends Controller
      * @param int $id
      * @return JsonResponse
      */
-    public function show(int $id): JsonResponse {
+    public function show(int $id) {
         // Search the category by its ID
         $category = Category::where('category_id', $id)->first();
 
