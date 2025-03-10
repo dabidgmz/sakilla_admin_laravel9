@@ -53,8 +53,8 @@ class AddressesController extends Controller
      * @return JsonResponse
      */
     public function store(Request $request)
-{
-    Log::info('Datos recibidos para la dirección:', $request->all());
+    {
+    
     
     // Validar los datos
     $validatedData = $request->validate([
@@ -66,7 +66,7 @@ class AddressesController extends Controller
         'phone' => 'required|string',
     ]);
     
-    Log::info('Datos recibidos para la dirección:', $validatedData);
+    
     
     Address::create([
         'address' => $request->input('address'),
@@ -81,7 +81,7 @@ class AddressesController extends Controller
     $addresses = Address::paginate(40);
     
     return redirect()->route('Address'); 
-}
+    }
 
 
     /**

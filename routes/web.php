@@ -4,6 +4,7 @@ use App\Http\Controllers\ActorsController;
 use App\Http\Controllers\AddressesController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\CitiesController;
+use App\Http\Controllers\CustomersController;
 use App\Http\Controllers\FilmsActorsController;
 use App\Http\Controllers\FilmsCategoriesController;
 use App\Http\Controllers\LanguagesController;
@@ -72,6 +73,11 @@ Route::get('/citys', [CitiesController::class, 'index'])->name('citys.index');
 Route::get('/Customers', function () {
     return view('Customers');
 })->name('Customers');
+
+Route::get('/Customers', [CustomersController::class, 'index'])->name('Customers');
+Route::post('/Customers', [CustomersController::class, 'store'])->name('Customers');
+Route::put('/customers/{id}', [CustomersController::class, 'update'])->name('customers.update');
+Route::delete('/customers/{id}', [CustomersController::class, 'destroy'])->name('customers.destroy');
 
 Route::get('/Flims', function () {
     return view('Flims');

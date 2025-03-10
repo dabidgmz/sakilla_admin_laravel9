@@ -18,12 +18,12 @@ class CustomersController extends Controller
      * @param int page : The page number.
      * @return JsonResponse
      */
-    public function index(): JsonResponse {
-        // Get all customers with pagination
-        $customers = Customer::paginate(20);
-
-        return response()->json($customers);
+    public function index() {
+        $perPage = 70;
+        $customers = Customer::paginate($perPage);
+        return view('Customers', compact('customers'));
     }
+    
 
     /**
      * Get a customer by its ID.
@@ -49,8 +49,8 @@ class CustomersController extends Controller
      * @param CustomerPostRequest $request : The request object.
      * @return JsonResponse
      */
-    public function store(CustomerPostRequest $request): JsonResponse {
-        // Validate the request data
+    public function store(CustomerPostRequest $request) {
+        
         $request->validated();
 
         // Create the customer
@@ -65,7 +65,7 @@ class CustomersController extends Controller
             'last_update' => now(),
         ]);
 
-        return response()->json($customer, 201);
+        return redirect()->route('Customers');
     }
 
     /**
@@ -75,32 +75,21 @@ class CustomersController extends Controller
      * @param int $id : The customer ID.
      * @return JsonResponse
      */
-    public function update(CustomerPutRequest $request, int $id): JsonResponse {
-        // Validate the request data
-        $request->validated();
-
-        // Check if at least one field is filled
-        if (empty($request->all())) {
-            return response()->json(['message' => 'You must specify at least one field to update.'], 400);
-        }
-
+    public function update(Request $request, int $id) {
         // Search the customer by its ID
-        $customer = Customer::where('customer_id', $id)->first();
+        $customer = Customer::findOrfail($id);
 
-        // If the customer does not exist, return an error
-        if (!$customer) {
-            return response()->json(['message' => 'Customer not found.'], 404);
-        }
 
-        // Update only provided fields
-        $customer->fill($request->only([
-            'store_id', 'first_name', 'last_name', 'email', 'address_id', 'active'
-        ]));
-
+        $customer->store_id = $request->input('store_id');
+        $customer->first_name = $request->input('first_name');
+        $customer->last_name = $request->input('last_name');
+        $customer->email = $request->input('email');
+        $customer->address_id = $request->input('address_id');
+        $customer->active = $request->input('active');
         $customer->last_update = now();
         $customer->save();
 
-        return response()->json($customer);
+        return redirect()->route('Customers');
     }
 
     /**
@@ -109,18 +98,10 @@ class CustomersController extends Controller
      * @param int $id : The customer ID.
      * @return JsonResponse
      */
-    public function destroy(int $id): JsonResponse {
+    public function destroy(int $id){
         // Search the customer by its ID
         $customer = Customer::where('customer_id', $id)->first();
-
-        // If the customer does not exist, return an error
-        if (!$customer) {
-            return response()->json(['message' => 'Customer not found.'], 404);
-        }
-
-        // Delete the customer
         $customer->delete();
-
-        return response()->json(['message' => 'Customer deleted.']);
+        return redirect()->route('Customers');
     }
 }
