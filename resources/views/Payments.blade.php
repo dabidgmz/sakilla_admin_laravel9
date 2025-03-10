@@ -52,11 +52,14 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="card">
-                                <div class="card-header">
+                                <div class="card-header d-flex justify-content-between align-items-center">
                                     <h3 class="card-title">Payment Records</h3>
+                                    <button class="btn btn-success" data-toggle="modal" data-target="#addPaymentModal">
+                                    <i class="fas fa-plus"></i> Add Payment
+                                </button>
                                 </div>
                                 <!-- /.card-header -->
-                                <div class="card-body">
+                                <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
                                     <table class="table table-bordered table-striped">
                                         <thead>
                                             <tr>
@@ -66,12 +69,11 @@
                                                 <th>Rental ID</th>
                                                 <th>Amount</th>
                                                 <th>Date</th>
-                                                <th>Last Update</th>
                                                 <th>Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {{-- @foreach ($payments as $payment)
+                                            @foreach ($payments as $payment)
                                                 <tr>
                                                     <td>{{ $payment->payment_id }}</td>
                                                     <td>{{ $payment->customer_id }}</td>
@@ -79,20 +81,48 @@
                                                     <td>{{ $payment->rental_id }}</td>
                                                     <td>{{ $payment->amount }}</td>
                                                     <td>{{ $payment->payment_date }}</td>
-                                                    <td>{{ $payment->last_update }}</td>
                                                     <td>
-                                                        <a href="{{ route('payments.edit', $payment->payment_id) }}" class="btn btn-warning btn-sm">Edit</a>
-                                                        <form action="{{ route('payments.destroy', $payment->payment_id) }}" method="POST" style="display:inline;">
+                                                        <button class="btn btn-warning" data-toggle="modal" data-target="#updatePaymentModal"
+                                                            data-payment_id="{{ $payment->payment_id }}"
+                                                            data-customer_id="{{ $payment->customer_id }}"
+                                                            data-staff_id="{{ $payment->staff_id }}"
+                                                            data-rental_id="{{ $payment->rental_id }}"
+                                                            data-amount="{{ $payment->amount }}">
+                                                            <i class="fas fa-edit"></i> Edit
+                                                        </button>
+                                                        <form action="{{ route('payments.destroy', $payment->payment_id) }}" method="POST" style="display: inline-block;">
                                                             @csrf
                                                             @method('DELETE')
-                                                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                                            <button type="submit" class="btn btn-danger">
+                                                                <i class="fas fa-trash"></i> Delete
+                                                            </button>
                                                         </form>
                                                     </td>
                                                 </tr>
-                                            @endforeach --}}
+                                            @endforeach
                                         </tbody>
                                     </table>
                                 </div>
+                                <div class="card-footer clearfix">
+                                    <ul class="pagination pagination-sm m-0 float-right">
+                                        {{-- Botón Anterior --}}
+                                        <li class="page-item {{ $payments->onFirstPage() ? 'disabled' : '' }}">
+                                            <a class="page-link" href="{{ $payments->previousPageUrl() }}">&laquo;</a>
+                                        </li>
+
+                                        {{-- Números de página --}}
+                                        @for ($page = 1; $page <= $payments->lastPage(); $page++)
+                                            <li class="page-item {{ $page == $payments->currentPage() ? 'active' : '' }}">
+                                                <a class="page-link" href="{{ $payments->url($page) }}">{{ $page }}</a>
+                                            </li>
+                                        @endfor
+
+                                        {{-- Botón Siguiente --}}
+                                        <li class="page-item {{ $payments->hasMorePages() ? '' : 'disabled' }}">
+                                            <a class="page-link" href="{{ $payments->nextPageUrl() }}">&raquo;</a>
+                                        </li>
+                                    </ul>
+                            </div>
                             </div>
                         </div>
                     </div>
@@ -159,6 +189,103 @@
         @include('Footer')
 
     </div>
+
+    <!-- Modal -->
+<div class="modal fade" id="addPaymentModal" tabindex="-1" role="dialog" aria-labelledby="addPaymentModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addPaymentModalLabel">Add New Payment</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="{{ route('payments.store') }}" method="POST">
+                @csrf
+                <div class="modal-body">
+                    <!-- Customer ID -->
+                    <div class="form-group">
+                        <label for="customer_id">Customer</label>
+                        <input type="number" class="form-control" id="customer_id" name="customer_id" placeholder="Enter Customer ID" value="{{ old('customer_id') }}" required>
+                    </div>
+
+                    <!-- Staff ID -->
+                    <div class="form-group">
+                        <label for="staff_id">Staff</label>
+                        <input type="number" class="form-control" id="staff_id" name="staff_id" placeholder="Enter Staff ID" value="{{ old('staff_id') }}" required>
+                    </div>
+
+                    <!-- Rental ID -->
+                    <div class="form-group">
+                        <label for="rental_id">Rental</label>
+                        <input type="number" class="form-control" id="rental_id" name="rental_id" placeholder="Enter Rental ID" value="{{ old('rental_id') }}" required>
+                    </div>
+
+                    <!-- Amount -->
+                    <div class="form-group">
+                        <label for="amount">Amount</label>
+                        <input type="number" step="0.01" class="form-control" id="amount" name="amount" placeholder="Enter Amount" value="{{ old('amount') }}" required>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save Payment</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="updatePaymentModal" tabindex="-1" role="dialog" aria-labelledby="updatePaymentModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updatePaymentModalLabel">Update Payment</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="actorForm" method="POST">
+                @csrf
+                @method('PUT')
+                <div class="modal-body">
+                    <!-- Customer ID -->
+                    <div class="form-group">
+                        <label for="customer_id">Customer</label>
+                        <input type="number" class="form-control" id="customer_id" name="customer_id" value="{{ $payment->customer_id }}" required>
+                    </div>
+
+                    <!-- Staff ID -->
+                    <div class="form-group">
+                        <label for="staff_id">Staff</label>
+                        <input type="number" class="form-control" id="staff_id" name="staff_id" value="{{ $payment->staff_id }}" required>
+                    </div>
+
+                    <!-- Rental ID -->
+                    <div class="form-group">
+                        <label for="rental_id">Rental</label>
+                        <input type="number" class="form-control" id="rental_id" name="rental_id" value="{{ $payment->rental_id }}" required>
+                    </div>
+
+                    <!-- Amount -->
+                    <div class="form-group">
+                        <label for="amount">Amount</label>
+                        <input type="number" step="0.01" class="form-control" id="amount" name="amount" value="{{ $payment->amount }}" required>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Update Payment</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 
     <!-- REQUIRED SCRIPTS -->
     <script src="plugins/jquery/jquery.min.js"></script>
@@ -245,6 +372,25 @@
             });
         });
     </script>
+
+<script>
+    $('#updatePaymentModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var payment_id = button.data('payment_id');
+        var customer_id = button.data('customer_id');
+        var staff_id = button.data('staff_id');
+        var rental_id = button.data('rental_id');
+        var amount = button.data('amount');
+
+        var modal = $(this);
+        modal.find('.modal-body #payment_id').val(payment_id);
+        modal.find('.modal-body #customer_id').val(customer_id);
+        modal.find('.modal-body #staff_id').val(staff_id);
+        modal.find('.modal-body #rental_id').val(rental_id);
+        modal.find('.modal-body #amount').val(amount);
+        modal.find('form').attr('action', '/payments/' + payment_id );
+    });
+</script>
 </body>
 
 </html>

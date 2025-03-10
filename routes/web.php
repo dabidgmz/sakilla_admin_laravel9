@@ -132,6 +132,12 @@ Route::get('/Payments', function () {
     return view('Payments');
 })->name('Payments');
 
+Route::get('/Payments', [PaymentsController::class, 'index'])->name('Payments');
+Route::post('/Payments', [PaymentsController::class, 'store'])->name('Payments');
+Route::put('/payments/{id}', [PaymentsController::class, 'update'])->name('payments.update');
+Route::delete('/payments/{id}', [PaymentsController::class, 'destroy'])->name('payments.destroy');
+
+
 Route::get('/Rentals', function () {
     return view('Rentals');
 })->name('Rentals');
