@@ -9,6 +9,10 @@ class Actor extends Model
 {
     use HasFactory;
 
+    protected $table = 'Actor';
+    protected $primaryKey = 'actor_id';
+    public $timestamps = false;
+
     protected $fillable = [
         'actor_id',
         'first_name',
@@ -16,11 +20,11 @@ class Actor extends Model
         'last_update',
     ];
 
-    protected $primaryKey = 'actor_id';
+    /*----------------------------------------------------------------------------------------------------*/
 
-    protected $table='actor';
+    /*----------------------------------------------------------------------------------------------------*/
 
-    public function film_actor(){
-        return $this->hasMany(Flim_Actor::class,'actor_id');
+    public function filmActor() {
+        return $this->hasMany(FilmActor::class, 'actor_id', 'actor_id');
     }
 }

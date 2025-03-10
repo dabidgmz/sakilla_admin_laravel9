@@ -9,17 +9,21 @@ class Country extends Model
 {
     use HasFactory;
 
+    protected $table = 'Country';
+    protected $primaryKey = 'country_id';
+    public $timestamps = false;
+
     protected $fillable = [
         'country_id',
         'country',
         'last_update',
     ];
-    
-    protected $primaryKey = 'country_id';
-    
-    protected $table= 'country';
 
-    public function City(){
-        return $this->belongsTo(City::class);
+    /*----------------------------------------------------------------------------------------------------*/
+
+    /*----------------------------------------------------------------------------------------------------*/
+
+    public function City() {
+        return $this->hasMany(City::class, 'country_id', 'country_id');
     }
 }

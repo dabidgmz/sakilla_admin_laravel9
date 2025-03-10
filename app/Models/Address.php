@@ -9,6 +9,10 @@ class Address extends Model
 {
     use HasFactory;
 
+    protected $table = 'address';
+    protected $primaryKey = 'adress_id';
+    public $timestamps = false;
+
     protected $fillable = [
         'address_id',
         'address',
@@ -20,4 +24,24 @@ class Address extends Model
         'location',
         'last_update',
     ];
+
+    /*----------------------------------------------------------------------------------------------------*/
+
+    public function city() {
+        return $this->belongsTo(City::class, 'city_id', 'city_id');
+    }
+
+    /*----------------------------------------------------------------------------------------------------*/
+
+    public function customer() {
+        return $this->hasMany(Customer::class, 'address_id', 'address_id');
+    }
+
+    public function staff() {
+        return $this->hasMany(Staff::class, 'address_id', 'address_id');
+    }
+
+    public function store() {
+        return $this->hasMany(Store::class, 'address_id', 'address_id');
+    }
 }

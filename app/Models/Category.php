@@ -9,17 +9,21 @@ class Category extends Model
 {
     use HasFactory;
 
+    protected $table = 'Category';
+    protected $primaryKey = 'category_id';
+    public $timestamps = false;
+
     protected $fillable = [
         'category_id',
         'name',
         'last_update',
     ];
 
-    protected $table= 'category';
+    /*----------------------------------------------------------------------------------------------------*/
 
-    protected $primaryKey='category_id';
+    /*----------------------------------------------------------------------------------------------------*/
 
-    public function film_category(){
-        return $this->belongsTo(Flim_Category::class,'category_id');
+    public function filmCategory() {
+        return $this->hasMany(FilmCategory::class, 'category_id', 'category_id');
     }
 }

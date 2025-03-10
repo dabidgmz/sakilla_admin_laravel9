@@ -5,37 +5,31 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Inventory extends Model
+class FilmCategory extends Model
 {
     use HasFactory;
 
-    protected $table = 'inventory';
-    protected $primaryKey = 'inventory_id';
+    protected $table = 'film_category';
+    protected $primaryKey = ['film_id', 'category_id'];
+    public $incrementing = false;
     public $timestamps = false;
 
+
     protected $fillable = [
-        'inventory_id',
         'film_id',
-        'store_id',
+        'category_id',
         'last_update',
     ];
 
     /*----------------------------------------------------------------------------------------------------*/
 
-    public function film()
-    {
+    public function film() {
         return $this->belongsTo(Film::class, 'film_id', 'film_id');
     }
 
-    public function store()
-    {
-        return $this->belongsTo(Store::class, 'store_id', 'store_id');
+    public function category() {
+        return $this->belongsTo(Category::class, 'category_id', 'category_id');
     }
 
     /*----------------------------------------------------------------------------------------------------*/
-
-    public function rental()
-    {
-        return $this->hasMany(Rental::class, 'inventory_id', 'inventory_id');
-    }
 }
