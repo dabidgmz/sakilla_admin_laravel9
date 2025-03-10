@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\City;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class CitiesController extends Controller
@@ -16,11 +15,17 @@ class CitiesController extends Controller
      * @param int page : The page number.
      * @return JsonResponse
      */
-    public function index(): JsonResponse {
+    public function index(Request $request){
         // Obtain all cities with pagination
-        $cities = City::paginate(20);
+        $perPage = 50; 
+        $query = City::with("country");
 
-        return response()->json($cities);
+        if ($request->has('search')) {
+            $query->where('city', 'like', '%' . $request->search . '%');
+        }
+        
+        $cities = $query->paginate($perPage);
+        return view("Citys", compact("cities"));
     }
 
     /**
@@ -29,11 +34,9 @@ class CitiesController extends Controller
      * @param int $id : The city ID.
      * @return JsonResponse
      */
-    public function show(int $id): JsonResponse {
-        // Search the city by its ID
+    public function show(int $id) {
         $city = City::where('city_id', $id)->first();
 
-        // If the city does not exist, return an error
         if (!$city) {
             return response()->json(['message' => 'City not found.'], 404);
         }
