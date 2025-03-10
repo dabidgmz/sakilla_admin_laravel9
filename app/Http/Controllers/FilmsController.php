@@ -4,7 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\FilmPostRequest;
 use App\Http\Requests\FilmPutRequest;
+use App\Models\Actor;
+use App\Models\Category;
 use App\Models\Film;
+use App\Models\FilmActor;
+use App\Models\FilmCategory;
+use App\Models\FilmText;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -19,8 +24,33 @@ class FilmsController extends Controller
      * @return JsonResponse
      */
     public function index(): JsonResponse {
-        // Get all films with pagination
+        // Get paginated films
         $films = Film::paginate(20);
+        $filmIds = $films->pluck('film_id');
+
+        // Get related data in separate queries
+        $filmActors = FilmActor::whereIn('film_id', $filmIds)->get()->groupBy('film_id');
+        $actors = Actor::whereIn('actor_id', $filmActors->flatten()->pluck('actor_id'))->get()->keyBy('actor_id');
+
+        $filmCategories = FilmCategory::whereIn('film_id', $filmIds)->get()->groupBy('film_id');
+        $categories = Category::whereIn('category_id', $filmCategories->flatten()->pluck('category_id'))->get()->keyBy('category_id');
+
+        $filmTexts = FilmText::whereIn('film_id', $filmIds)->get()->keyBy('film_id');
+
+        // Construct response
+        $films->transform(function ($film) use ($filmActors, $actors, $filmCategories, $categories, $filmTexts) {
+            $film->actors = $filmActors[$film->film_id]->map(function ($filmActor) use ($actors) {
+                return $actors[$filmActor->actor_id] ?? null;
+            })->filter()->values();
+
+            $film->categories = $filmCategories[$film->film_id]->map(function ($filmCategory) use ($categories) {
+                return $categories[$filmCategory->category_id] ?? null;
+            })->filter()->values();
+
+            $film->text = $filmTexts[$film->film_id] ?? null;
+
+            return $film;
+        });
 
         return response()->json($films);
     }
@@ -32,14 +62,31 @@ class FilmsController extends Controller
      * @return JsonResponse
      */
     public function show(int $id): JsonResponse {
-        // Search the film by its ID
-        $film = Film::where('film_id', $id)->first();
-
-        // If the film does not exist, return an error
+        // Obtener la película
+        $film = Film::find($id);
+    
         if (!$film) {
             return response()->json(['message' => 'Film not found.'], 404);
         }
-
+    
+        // Obtener relaciones en una sola consulta
+        $filmActors = FilmActor::where('film_id', $id)->get();
+        $actorIds = $filmActors->pluck('actor_id');
+    
+        $actors = Actor::whereIn('actor_id', $actorIds)->get()->keyBy('actor_id');
+    
+        $filmCategories = FilmCategory::where('film_id', $id)->get();
+        $categoryIds = $filmCategories->pluck('category_id');
+    
+        $categories = Category::whereIn('category_id', $categoryIds)->get()->keyBy('category_id');
+    
+        $filmText = FilmText::where('film_id', $id)->first();
+    
+        // Mapear actores y categorías en la película
+        $film->actors = $filmActors->map(fn($filmActor) => $actors[$filmActor->actor_id] ?? null)->filter()->values();
+        $film->categories = $filmCategories->map(fn($filmCategory) => $categories[$filmCategory->category_id] ?? null)->filter()->values();
+        $film->text = $filmText;
+    
         return response()->json($film);
     }
 
