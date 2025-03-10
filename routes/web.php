@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ActorsController;
+use App\Http\Controllers\AddressesController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\CitiesController;
 use App\Http\Controllers\FilmsActorsController;
@@ -24,7 +25,7 @@ Route::get('/', function () {
     return view('index');
 })->name('index');
 
-# Actors
+# Actors views
 Route::get('/Actors', function () {
     return view('Actors');
 })->name('Actors');
@@ -37,9 +38,22 @@ Route::put('/actors/{id}', [ActorsController::class, 'update'])->name('actor.upd
 
 Route::delete('/actors/{id}', [ActorsController::class, 'destroy'])->name('actors.destroy');
 
+
+# Addresses views
 Route::get('/Address', function () {
     return view('Address');
 })->name('Address');
+
+Route::get('/Address', [AddressesController::class, 'index'])->name('Address');
+
+Route::post('/Address', [AddressesController::class, 'store'])->name('Address');
+
+Route::put('/address/{id}', [AddressesController::class, 'update'])->name('address.update');
+
+Route::delete('/address/{id}', [AddressesController::class, 'destroy'])->name('address.destroy');
+
+
+
 
 // Route::get('/Categories', function () {
 //     return view('Categories');

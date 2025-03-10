@@ -7,34 +7,12 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            {{--  <!-- <form id="actorForm" method="POST" action="{{ route('') }}"> --> --}}
+            <form id="actorForm" method="POST" action="{{ route('Address') }}"> 
                 <input type="hidden" name="_method" id="method_field" value="POST"> 
                 <input type="hidden" id="address_id" name="address_id">
             <div class="modal-body">
                 <div class="form-group">
-                    <label for="first_name">Name</label>
-                    <input type="text" class="form-control" id="first_name" name="first_name" placeholder="Ingrese el nombre" value="{{ old('first_name') }}" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="last_name">Lastname</label>
-                    <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Ingrese el apellido" value="{{ old('last_name') }}" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="address_id">Address ID</label>
-                    <select class="form-control" id="address_id" name="address_id" disabled>
-                        <option value="">Select Address</option>
-                        {{--@foreach($addresses as $address)
-                            <option value="{{ $address->id }}" {{ old('address_id') == $address->id ? 'selected' : '' }}>
-                                {{ $address->address1 }} 
-                            </option>
-                        @endforeach --}}
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="address1">Address 1</label>
+                    <label for="address1">Address</label>
                     <input type="text" class="form-control" id="address1" name="address1" value="{{ old('address1') }}">
                 </div>
 
@@ -50,14 +28,7 @@
 
                 <div class="form-group">
                     <label for="city_id">City ID</label>
-                    <select class="form-control" id="city_id" name="city_id" disabled>
-                        <option value="">Select City</option>
-                         {{--@foreach($cities as $city)
-                            <option value="{{ $city->id }}" {{ old('city_id') == $city->id ? 'selected' : '' }}>
-                                {{ $city->name }} 
-                            </option>
-                        @endforeach --}}
-                    </select>
+                    <input type="text" class="form-control" id="city_id" name="city_id" value="{{ old('city_id') }}">
                 </div>
 
                 <div class="form-group">
@@ -70,10 +41,6 @@
                     <input type="text" class="form-control" id="phone" name="phone" value="{{ old('phone') }}">
                 </div>
 
-                <div class="form-group">
-                    <label for="location">Location</label>
-                    <input type="text" class="form-control" id="location" name="location" value="{{ old('location') }}">
-                </div>
             </div>
 
             <div class="modal-footer">

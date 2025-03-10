@@ -9,7 +9,7 @@ class City extends Model
 {
     use HasFactory;
 
-    protected $table = 'City';
+    protected $table = 'city';
     protected $primaryKey = 'city_id';
     public $timestamps = false;
 

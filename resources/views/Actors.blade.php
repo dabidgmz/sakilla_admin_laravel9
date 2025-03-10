@@ -70,7 +70,6 @@
                                             <th>#</th>
                                             <th>First Name</th>
                                             <th>Last Name</th>
-                                            <th>Last Update</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>

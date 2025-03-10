@@ -10,7 +10,7 @@ class Address extends Model
     use HasFactory;
 
     protected $table = 'address';
-    protected $primaryKey = 'adress_id';
+    protected $primaryKey = 'address_id';
     public $timestamps = false;
 
     protected $fillable = [
@@ -21,18 +21,15 @@ class Address extends Model
         'city_id',
         'postal_code',
         'phone',
-        'location',
         'last_update',
     ];
 
-    /*----------------------------------------------------------------------------------------------------*/
-
+    // Relación con la tabla City
     public function city() {
-        return $this->belongsTo(City::class, 'city_id', 'city_id');
+        return $this->belongsTo(City::class, 'city_id', 'city_id'); 
     }
 
-    /*----------------------------------------------------------------------------------------------------*/
-
+    // Relaciones con otros modelos
     public function customer() {
         return $this->hasMany(Customer::class, 'address_id', 'address_id');
     }
