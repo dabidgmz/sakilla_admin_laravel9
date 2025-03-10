@@ -14,6 +14,7 @@ use App\Http\Controllers\InventoriesController;
 use App\Http\Controllers\PaymentsController;
 use App\Http\Controllers\RentalsController;
 use App\Http\Controllers\StoresController;
+use App\Http\Controllers\StaffController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -151,6 +152,11 @@ Route::get('/Staff', function () {
     return view('Staff');
 })->name('Staff');
 
+Route::get('/Staff', [StaffController::class, 'index'])->name('Staff');
+Route::post('/Staff', [StaffController::class, 'store'])->name('Staff');
+Route::put('staff/{id}', [StaffController::class, 'update'])->name('staff.update');
+
+Route::delete('/staff/{id}', [StaffController::class, 'destroy'])->name('staff.destroy');
 // Route::get('/Stores', function () {
 //     return view('Stores');
 // })->name('Stores');

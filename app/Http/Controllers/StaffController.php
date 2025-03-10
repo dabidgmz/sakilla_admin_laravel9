@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StaffPostRequest;
 use App\Http\Requests\StaffPutRequest;
 use App\Models\Staff;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -18,11 +19,12 @@ class StaffController extends Controller
      * @param int page : The page number.
      * @return JsonResponse
      */
-    public function index(): JsonResponse {
+    public function index() {
         // Get all staff members with pagination
-        $staff = Staff::paginate(20);
+        $perPage = 810;
+        $staff = Staff::paginate($perPage);
 
-        return response()->json($staff);
+        return View('Staff', compact('staff'));
     }
 
     /**
@@ -49,26 +51,23 @@ class StaffController extends Controller
      * @param StaffPostRequest $request : The request object.
      * @return JsonResponse
      */
-    public function store(StaffPostRequest $request): JsonResponse {
-        // Validate the request data
-        $request->validated();
-
-        // Create the staff member
+    public function store(Request $request) {
         $staff = Staff::create([
             'first_name' => $request->input('first_name'),
             'last_name' => $request->input('last_name'),
             'address_id' => $request->input('address_id'),
-            'picture' => $request->input('picture'),
+            'picture' => $request->input('picture') ?? null, 
             'email' => $request->input('email'),
             'store_id' => $request->input('store_id'),
             'active' => $request->input('active'),
             'username' => $request->input('username'),
-            'password' => bcrypt($request->input('password')),
+            'password' => $request->filled('password') ? bcrypt($request->input('password')) : null, 
             'last_update' => now(),
         ]);
-
-        return response()->json($staff, 201);
+    
+        return redirect()->route('Staff');
     }
+    
 
     /**
      * Update a staff member by its ID.
@@ -77,38 +76,22 @@ class StaffController extends Controller
      * @param int $id : The staff ID.
      * @return JsonResponse
      */
-    public function update(StaffPutRequest $request, int $id): JsonResponse {
-        // Validate the request data
-        $request->validated();
-
-        // Check if at least one field is filled
-        if (empty($request->all())) {
-            return response()->json(['message' => 'You must specify at least one field to update.'], 400);
-        }
-
-        // Search the staff member by its ID
-        $staff = Staff::where('staff_id', $id)->first();
-
-        // If the staff member does not exist, return an error
-        if (!$staff) {
-            return response()->json(['message' => 'Staff member not found.'], 404);
-        }
-
-        // Update only provided fields
-        $staff->fill($request->only([
-            'first_name', 'last_name', 'address_id', 'picture', 
-            'email', 'store_id', 'active', 'username'
-        ]));
-
-        if ($request->has('password')) {
-            $staff->password = bcrypt($request->input('password'));
-        }
-
-        $staff->last_update = now();
-        $staff->save();
-
-        return response()->json($staff);
+    public function update(Request $request, int $id) {
+        $staff = Staff::findOrFail($id);
+    
+        $staff->update([
+            'first_name' => $request->input('first_name'),
+            'last_name' => $request->input('last_name'),
+            'email' => $request->input('email'),
+            'username' => $request->input('username'),
+            'store_id' => (int) $request->input('store_id'), // Convertir a int si es necesario
+            'active' => (bool) $request->input('active'), // Convertir a booleano si es necesario
+        ]);
+    
+        return redirect()->route('staff.index')->with('success', 'Staff updated successfully');
     }
+    
+
 
     /**
      * Delete a staff member by its ID.
@@ -116,18 +99,10 @@ class StaffController extends Controller
      * @param int $id : The staff ID.
      * @return JsonResponse
      */
-    public function destroy(int $id): JsonResponse {
+    public function destroy(int $id) {
         // Search the staff member by its ID
-        $staff = Staff::where('staff_id', $id)->first();
-
-        // If the staff member does not exist, return an error
-        if (!$staff) {
-            return response()->json(['message' => 'Staff member not found.'], 404);
-        }
-
-        // Delete the staff member
+        $staff = Staff::findOrFail($id); 
         $staff->delete();
-
-        return response()->json(['message' => 'Staff member deleted.']);
+        return redirect()->route('Staff');
     }
 }
