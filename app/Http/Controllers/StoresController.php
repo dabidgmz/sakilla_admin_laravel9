@@ -18,11 +18,10 @@ class StoresController extends Controller
      * @param int page : The page number.
      * @return JsonResponse
      */
-    public function index(): JsonResponse {
+    public function index() {
         // Get all stores with pagination
-        $stores = Store::paginate(20);
-
-        return response()->json($stores);
+        $stores = Store::all();
+        return view("Stores",compact("stores"));
     }
 
     /**

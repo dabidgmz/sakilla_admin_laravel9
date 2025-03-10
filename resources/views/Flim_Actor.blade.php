@@ -59,24 +59,43 @@
                             <div class="card-header d-flex justify-content-between align-items-center">
                                 <h5 class="m-0">Flim Actor List</h5>
                             </div>
-                            <div class="card-body">
+                            <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>Flim ID</th>
-                                            
+                                            <th>Film ID</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                       @foreach ($flim_actor as $Flim_Actor)
+                                        @foreach ($film_actors as $film_actor)
                                             <tr>
-                                                <td>{{ $Flim_Actor->actor_id }}</td>
-                                                <td>{{ $Flim_Actor->film_id }}</td>                                                
+                                                <td>{{ $film_actor->actor->first_name }} {{ $film_actor->actor->last_name }}</td>
+                                                <td>{{ $film_actor->film_id }}</td>
                                             </tr>
-                                        @endforeach 
+                                        @endforeach
                                     </tbody>
                                 </table>
+                            </div>
+                            <div class="card-footer clearfix">
+                                    <ul class="pagination pagination-sm m-0 float-right">
+                                        {{-- Botón Anterior --}}
+                                        <li class="page-item {{ $film_actors->onFirstPage() ? 'disabled' : '' }}">
+                                            <a class="page-link" href="{{ $film_actors->previousPageUrl() }}">&laquo;</a>
+                                        </li>
+
+                                        {{-- Números de página --}}
+                                        @for ($page = 1; $page <= $film_actors->lastPage(); $page++)
+                                            <li class="page-item {{ $page == $film_actors->currentPage() ? 'active' : '' }}">
+                                                <a class="page-link" href="{{ $film_actors->url($page) }}">{{ $page }}</a>
+                                            </li>
+                                        @endfor
+
+                                        {{-- Botón Siguiente --}}
+                                        <li class="page-item {{ $film_actors->hasMorePages() ? '' : 'disabled' }}">
+                                            <a class="page-link" href="{{ $film_actors->nextPageUrl() }}">&raquo;</a>
+                                        </li>
+                                    </ul>
                             </div>
                         </div>
                     </div>
