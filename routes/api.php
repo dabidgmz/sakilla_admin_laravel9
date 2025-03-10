@@ -15,6 +15,7 @@ use App\Http\Controllers\LanguagesController;
 use App\Http\Controllers\PaymentsController;
 use App\Http\Controllers\RentalsController;
 use App\Http\Controllers\StaffController;
+use App\Http\Controllers\StoresController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -152,12 +153,12 @@ Route::group(['prefix' => '/v1'], function() {
         Route::delete('/{id}', 'destroy')->whereNumber('id')->name('staff.destroy');
     });
 
-    // Staff routes
-    Route::group(['prefix' => '/staff', 'controller' => StaffController::class], function() {
-        Route::get('/', 'index')->name('staff.index');
-        Route::get('/{id}', 'show')->whereNumber('id')->name('staff.show');
-        Route::post('/', 'store')->name('staff.store');
-        Route::put('/{id}', 'update')->whereNumber('id')->name('staff.update');
-        Route::delete('/{id}', 'destroy')->whereNumber('id')->name('staff.destroy');
+    // Stores routes
+    Route::group(['prefix' => '/stores', 'controller' => StoresController::class], function() {
+        Route::get('/', 'index')->name('stores.index');
+        Route::get('/{id}', 'show')->whereNumber('id')->name('stores.show');
+        Route::post('/', 'store')->name('stores.store');
+        Route::put('/{id}', 'update')->whereNumber('id')->name('stores.update');
+        Route::delete('/{id}', 'destroy')->whereNumber('id')->name('stores.destroy');
     });
 });
