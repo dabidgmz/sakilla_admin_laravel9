@@ -18,12 +18,16 @@ class InventoriesController extends Controller
      * @param int page : The page number.
      * @return JsonResponse
      */
-    public function index(): JsonResponse {
-        // Get all inventory items with pagination
-        $inventories = Inventory::paginate(20);
-
-        return response()->json($inventories);
+    public function index() {
+        $perPage = 150;  
+        $inventoriData = Inventory::paginate($perPage); 
+        $storeCounts = Inventory::all()->groupBy('store_id')->map(function ($items, $key) {
+            return $items->count();  
+        });
+    
+        return view('Inventory', compact('inventoriData', 'storeCounts'));
     }
+    
 
     /**
      * Get an inventory item by its ID.
@@ -49,19 +53,17 @@ class InventoriesController extends Controller
      * @param InventoryPostRequest $request : The request object.
      * @return JsonResponse
      */
-    public function store(InventoryPostRequest $request): JsonResponse {
-        // Validate the request data
-        $request->validated();
-
-        // Create the inventory item
+    public function store(Request $request)
+    {
+ 
         $inventory = Inventory::create([
             'film_id' => $request->input('film_id'),
             'store_id' => $request->input('store_id'),
             'last_update' => now(),
         ]);
-
-        return response()->json($inventory, 201);
+        return redirect()->route('Inventories');
     }
+    
 
     /**
      * Update an inventory item by its ID.
@@ -70,25 +72,20 @@ class InventoriesController extends Controller
      * @param int $id : The inventory ID.
      * @return JsonResponse
      */
-    public function update(InventoryPutRequest $request, int $id): JsonResponse {
-        // Validate the request data
-        $request->validated();
+    public function update(Request $request, $id)
+    {
+        $inventory = Inventory::findOrFail($id);
 
-        // Search the inventory item by its ID
-        $inventory = Inventory::where('inventory_id', $id)->first();
+        // Actualiza los datos del inventario
+        $inventory->update([
+            'film_id' => $request->input('film_id'),
+            'store_id' => $request->input('store_id'),
+            'last_update' => now(),
+        ]);
 
-        // If the inventory item does not exist, return an error
-        if (!$inventory) {
-            return response()->json(['message' => 'Inventory item not found.'], 404);
-        }
-
-        // Update only provided fields
-        $inventory->fill($request->only(['film_id', 'store_id']));
-        $inventory->last_update = now();
-        $inventory->save();
-
-        return response()->json($inventory);
+        return redirect()->route('Inventories');
     }
+
 
     /**
      * Delete an inventory item by its ID.
@@ -96,18 +93,16 @@ class InventoriesController extends Controller
      * @param int $id : The inventory ID.
      * @return JsonResponse
      */
-    public function destroy(int $id): JsonResponse {
-        // Search the inventory item by its ID
-        $inventory = Inventory::where('inventory_id', $id)->first();
+    public function destroy($id)
+    {
+        // Encuentra el inventario por su ID
+        $inventory = Inventory::findOrFail($id);
 
-        // If the inventory item does not exist, return an error
-        if (!$inventory) {
-            return response()->json(['message' => 'Inventory item not found.'], 404);
-        }
-
-        // Delete the inventory item
+        // Elimina el inventario
         $inventory->delete();
 
-        return response()->json(['message' => 'Inventory item deleted.']);
+        // Redirige al listado de inventarios
+        return redirect()->route('Inventories');
     }
+
 }

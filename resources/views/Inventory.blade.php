@@ -45,7 +45,13 @@
                             <div class="card-header">
                                 <h3 class="card-title">Inventory Data</h3>
                             </div>
-                            <div class="card-body">
+                            <div class="card-body text-center">
+                                <button class="btn btn-success" data-toggle="modal" data-target="#addInventoryModal">
+                                    <i class="fas fa-plus"></i> Agregar Customer
+                                </button>
+                            </div>
+                            </div>
+                            <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>
@@ -53,19 +59,55 @@
                                             <th>Film ID</th>
                                             <th>Store ID</th>
                                             <th>Last Update</th>
+                                            <th>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                         {{--@foreach($inventoryData as $data)
+                                    @foreach($inventoriData as $data)
                                         <tr>
                                             <td>{{ $data->inventory_id }}</td>
                                             <td>{{ $data->film_id }}</td>
                                             <td>{{ $data->store_id }}</td>
                                             <td>{{ $data->last_update }}</td>
+                                            <td>
+                                                <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editInventoryModal"
+                                                    data-id="{{ $data->inventory_id }}"
+                                                    data-film_id="{{ $data->film_id }}"
+                                                    data-store_id="{{ $data->store_id }}">
+                                                    <i class="fas fa-edit"></i> Edit
+                                                </button>
+                                                <form action="{{ route('inventories.destroy', $data->inventory_id) }}" method="POST" style="display: inline;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button class="btn btn-danger btn-sm" type="submit">
+                                                        <i class="fas fa-trash"></i> Delete
+                                                    </button>
+                                                </form>
+                                            </td>
                                         </tr>
-                                        @endforeach --}}
+                                        @endforeach 
                                     </tbody>
                                 </table>
+                            </div>
+                            <div class="card-footer clearfix">
+                                    <ul class="pagination pagination-sm m-0 float-right">
+                                        {{-- Botón Anterior --}}
+                                        <li class="page-item {{ $inventoriData->onFirstPage() ? 'disabled' : '' }}">
+                                            <a class="page-link" href="{{ $inventoriData->previousPageUrl() }}">&laquo;</a>
+                                        </li>
+
+                                        {{-- Números de página --}}
+                                        @for ($page = 1; $page <= $inventoriData->lastPage(); $page++)
+                                            <li class="page-item {{ $page == $inventoriData->currentPage() ? 'active' : '' }}">
+                                                <a class="page-link" href="{{ $inventoriData->url($page) }}">{{ $page }}</a>
+                                            </li>
+                                        @endfor
+
+                                        {{-- Botón Siguiente --}}
+                                        <li class="page-item {{ $inventoriData ->hasMorePages() ? '' : 'disabled' }}">
+                                            <a class="page-link" href="{{ $inventoriData ->nextPageUrl() }}">&raquo;</a>
+                                        </li>
+                                    </ul>
                             </div>
                         </div>
                     </div>
@@ -107,6 +149,76 @@
     @include('ControlSidebar')
     @include('Footer')
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="addInventoryModal" tabindex="-1" role="dialog" aria-labelledby="addInventoryModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addInventoryModalLabel">Add New Inventory</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="{{ route('inventories.store') }}" method="POST">
+                @csrf
+                <div class="modal-body">
+                    <!-- Film ID -->
+                    <div class="form-group">
+                        <label for="film_id">Film</label>
+                        <input type="text" class="form-control" id="film_id" name="film_id" placeholder="Enter Film ID" value="{{ old('film_id') }}" required>
+                    </div>
+
+                    <!-- Store ID -->
+                    <div class="form-group">
+                        <label for="store_id">Store</label>
+                        <input type="text" class="form-control" id="store_id" name="store_id" placeholder="Enter Store ID" value="{{ old('store_id') }}" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save Inventory</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para Editar -->
+<div class="modal fade" id="editInventoryModal" tabindex="-1" role="dialog" aria-labelledby="editInventoryModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editInventoryModalLabel">Edit Inventory</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="actorForm" method="POST">
+                @csrf
+                @method('PUT') <!-- Método PUT para la actualización -->
+                <div class="modal-body">
+                    <!-- Film ID -->
+                    <div class="form-group">
+                        <label for="film_id">Film</label>
+                        <input type="text" class="form-control" id="film_id" name="film_id" value="{{ old('film_id')}}" required>
+                    </div>
+
+                    <!-- Store ID -->
+                    <div class="form-group">
+                        <label for="store_id">Store</label>
+                        <input type="text" class="form-control" id="store_id" name="store_id" value="{{old('store_id') }}" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 
 <script src="../../plugins/jquery/jquery.min.js"></script>
 <script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -168,5 +280,19 @@
     });
 </script>
 
+<script>
+    $('#editInventoryModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var inventoryid = button.data('id');
+        var film_id = button.data('film_id');
+        var store_id = button.data('store_id');
+
+        var modal = $(this);
+        modal.find('.modal-body #inventory_id').val(inventoryid);
+        modal.find('.modal-body #film_id').val(film_id);
+        modal.find('.modal-body #store_id').val(store_id);
+        modal.find('form').attr('action', '/inventories/' + inventoryid);
+    });
+</script>
 </body>
 </html>

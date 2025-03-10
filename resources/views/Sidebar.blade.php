@@ -107,9 +107,9 @@
 
                         <!-- Inventory -->
                         <li class="nav-item">
-                            <a href="{{ route('Inventory') }}" class="nav-link">
+                            <a href="{{ route('Inventories') }}" class="nav-link">
                                 <i class="nav-icon far fa-circle text-danger"></i>
-                                <p>Inventory</p>
+                                <p>Inventories</p>
                             </a>
                         </li>
 

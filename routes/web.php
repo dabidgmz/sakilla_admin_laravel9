@@ -10,6 +10,9 @@ use App\Http\Controllers\FilmsActorsController;
 use App\Http\Controllers\FilmsCategoriesController;
 use App\Http\Controllers\FilmsTextsController;
 use App\Http\Controllers\LanguagesController;
+use App\Http\Controllers\InventoriesController;
+use App\Http\Controllers\PaymentsController;
+use App\Http\Controllers\RentalsController;
 use App\Http\Controllers\StoresController;
 use Illuminate\Support\Facades\Route;
 
@@ -110,9 +113,14 @@ Route::put('/film_text/{id}', [FilmsTextsController::class, 'update'])->name('fi
 Route::delete('/film_text/{id}', [FilmsTextsController::class, 'destroy'])->name('film_text.destroy');
 
 
-Route::get('/Inventory', function () {
-    return view('Inventory');
-})->name('Inventory');
+Route::get('/Inventories', function () {
+    return view('/Inventories');
+})->name('/Inventories');
+
+Route::get('/Inventories', [InventoriesController::class, 'index'])->name('Inventories');
+Route::post('/Inventories', [InventoriesController::class, 'store'])->name('Inventories');
+Route::put('/inventories/{id}', [InventoriesController::class, 'update'])->name('inventories.update');
+Route::delete('/inventories/{id}', [InventoriesController::class, 'destroy'])->name('inventories.destroy');
 
 // Route::get('/Languages', function () {
 //     return view('Languages');
