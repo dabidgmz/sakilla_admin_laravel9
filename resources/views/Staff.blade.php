@@ -89,7 +89,7 @@
                                                 <td>{{ $member->store_id }}</td>
                                                 <td>{{ $member->active ? 'Active' : 'Inactive' }}</td>
                                                 <td>
-                                                <a class="btn btn-primary btn-sm editStaffBtn" data-toggle="modal" data-target="#editStaffModal"
+                                                {{-- <a class="btn btn-primary btn-sm editStaffBtn" data-toggle="modal" data-target="#editStaffModal"
                                                     data-id="{{ $member->staff_id }}"
                                                     data-first_name="{{ $member->first_name }}"
                                                     data-last_name="{{ $member->last_name }}"
@@ -100,7 +100,7 @@
                                                     data-active="{{ $member->active }}"
                                                     data-username="{{ $member->username }}">
                                                     <i class="fas fa-edit"></i> Edit
-                                                </a>
+                                                </a> --}}
 
                                                     <form action="{{ route('staff.destroy', $member->staff_id) }}" method="POST" style="display: inline-block;">
                                                         @csrf
@@ -242,7 +242,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="{{ route('staff.update', ['id' => $member->staff_id]) }}" method="POST">
+            <form action="{{ route('staff.update', $member->staff_id) }}" method="POST">
                 @csrf
                 @method('PUT')
                 <input type="hidden" name="id" value="{{ $member->staff_id }}">

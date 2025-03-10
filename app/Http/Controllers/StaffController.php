@@ -61,13 +61,12 @@ class StaffController extends Controller
             'store_id' => $request->input('store_id'),
             'active' => $request->input('active'),
             'username' => $request->input('username'),
-            'password' => $request->filled('password') ? bcrypt($request->input('password')) : null, 
+            'password' => $request->filled('password') ? sha1($request->input('password')) : null, 
             'last_update' => now(),
         ]);
     
         return redirect()->route('Staff');
     }
-    
 
     /**
      * Update a staff member by its ID.
@@ -82,10 +81,14 @@ class StaffController extends Controller
         $staff->update([
             'first_name' => $request->input('first_name'),
             'last_name' => $request->input('last_name'),
+            'address_id' => $request->input('address_id'),
+            'picture' => $request->input('picture'),
             'email' => $request->input('email'),
-            'username' => $request->input('username'),
             'store_id' => (int) $request->input('store_id'), // Convertir a int si es necesario
             'active' => (bool) $request->input('active'), // Convertir a booleano si es necesario
+            'username' => $request->input('username'),
+            'password' => $request->filled('password') ? sha1($request->input('password')) : $staff->password,
+            'last_update' => now(),
         ]);
     
         return redirect()->route('staff.index')->with('success', 'Staff updated successfully');

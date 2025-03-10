@@ -154,9 +154,9 @@ Route::get('/Staff', function () {
 
 Route::get('/Staff', [StaffController::class, 'index'])->name('Staff');
 Route::post('/Staff', [StaffController::class, 'store'])->name('Staff');
-Route::put('staff/{id}', [StaffController::class, 'update'])->name('staff.update');
-
+Route::put('/staff/{id}', [StaffController::class, 'update'])->whereNumber('id')->name('staff.update');
 Route::delete('/staff/{id}', [StaffController::class, 'destroy'])->name('staff.destroy');
+
 // Route::get('/Stores', function () {
 //     return view('Stores');
 // })->name('Stores');
