@@ -33,6 +33,10 @@ Route::get('/Actors', [ActorsController::class, 'index'])->name('Actors');
 
 Route::post('/Actors', [ActorsController::class, 'store'])->name('Actors');
 
+Route::put('/actors/{id}', [ActorsController::class, 'update'])->name('actor.update');
+
+Route::delete('/actors/{id}', [ActorsController::class, 'destroy'])->name('actors.destroy');
+
 Route::get('/Address', function () {
     return view('Address');
 })->name('Address');
