@@ -60,7 +60,7 @@
                             <div class="card-header d-flex justify-content-between align-items-center">
                                 <h5 class="m-0">Flim Category List</h5>
                             </div>
-                            <div class="card-body">
+                            <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>
