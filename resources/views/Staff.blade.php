@@ -89,7 +89,7 @@
                                                 <td>{{ $member->store_id }}</td>
                                                 <td>{{ $member->active ? 'Active' : 'Inactive' }}</td>
                                                 <td>
-                                                {{-- <a class="btn btn-primary btn-sm editStaffBtn" data-toggle="modal" data-target="#editStaffModal"
+                                                <a class="btn btn-primary btn-sm editStaffBtn" data-toggle="modal" data-target="#editStaffModal"
                                                     data-id="{{ $member->staff_id }}"
                                                     data-first_name="{{ $member->first_name }}"
                                                     data-last_name="{{ $member->last_name }}"
@@ -100,7 +100,7 @@
                                                     data-active="{{ $member->active }}"
                                                     data-username="{{ $member->username }}">
                                                     <i class="fas fa-edit"></i> Edit
-                                                </a> --}}
+                                                </a>
 
                                                     <form action="{{ route('staff.destroy', $member->staff_id) }}" method="POST" style="display: inline-block;">
                                                         @csrf
@@ -332,32 +332,22 @@
 <script src="dist/js/adminlte.min.js"></script>
 
 <script>
-    $('#editStaffModal').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget);
-        var staff_id = button.data('staff_id');
-        var first_name = button.data('first_name');
-        var last_name = button.data('last_name');
-        var address_id = button.data('address_id');
-        var picture = button.data('picture');
-        var email = button.data('email');
-        var store_id = button.data('store_id');
-        var active = button.data('active');
-        var username = button.data('username');
-        var password = button.data('password');
-        
-        var modal = $(this);
-        modal.find('.modal-body #staff_id').val(staff_id);
-        modal.find('.modal-body #first_name').val(first_name);
-        modal.find('.modal-body #last_name').val(last_name);
-        modal.find('.modal-body #address_id').val(address_id);
-        modal.find('.modal-body #picture').val(picture);
-        modal.find('.modal-body #email').val(email);
-        modal.find('.modal-body #store_id').val(store_id);
-        modal.find('.modal-body #active').val(active);
-        modal.find('.modal-body #username').val(username);
-        modal.find('.modal-body #password').val(password);
-        modal.find('form').attr('action', '/staff/' + staff_id );
-    });
+$(document).on('click', '.editStaffBtn', function () {
+    let id = $(this).data('id');
+
+    $('#editStaffModal input[name="id"]').val(id);
+    $('#editStaffModal input[name="first_name"]').val($(this).data('first_name'));
+    $('#editStaffModal input[name="last_name"]').val($(this).data('last_name'));
+    $('#editStaffModal input[name="email"]').val($(this).data('email'));
+    $('#editStaffModal input[name="store_id"]').val($(this).data('store_id'));
+    $('#editStaffModal select[name="active"]').val($(this).data('active'));
+    $('#editStaffModal input[name="username"]').val($(this).data('username'));
+
+    let form = $('#editStaffModal form');
+    let action = form.attr('action').replace('undefined', id)
+    form.attr('action', action);
+});
+
 </script>
 </body>
 </html>

@@ -91,7 +91,7 @@ class StaffController extends Controller
             'last_update' => now(),
         ]);
     
-        return redirect()->route('staff.index')->with('success', 'Staff updated successfully');
+        return redirect()->route('Staff');
     }
     
 
