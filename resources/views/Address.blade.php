@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="{{ asset('plugins/fontawesome-free/css/all.min.css') }}">
     <!-- Theme style -->
     <link rel="stylesheet" href="dist/css/adminlte.min.css">
+    <link rel="icon" href="{{ asset('dist/img/CinemaStudio.png') }}" type="image/x-icon">
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -18,11 +19,11 @@
     @include('Navbar')
 
     <!-- Main Sidebar Container -->
-    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <aside  class="main-sidebar sidebar-dark-primary elevation-4" style="background: linear-gradient(to bottom, #000000, #333333);">
         <!-- Brand Logo -->
         <a href="{{ route('index') }}" class="brand-link">
-            <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-            <span class="brand-text font-weight-light">Movie Rental</span>
+        <img src="dist/img/CinemaStudio.png" alt="Cinema Studio Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+        <span class="brand-text font-weight-light">Cinema Studio</span>
         </a>
 
         @include('Sidebar')
@@ -59,7 +60,7 @@
                             <div class="card-header d-flex justify-content-between align-items-center">
                                 <h5 class="m-0">Address List</h5>
                                 <button class="btn btn-success mb-3" data-toggle="modal" data-target="#actorModal">
-                                    <i class="fas fa-plus"></i> Agregar Address
+                                    <i class="fas fa-plus"></i> Add Address
                                 </button>
                             </div>
                             <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
@@ -87,7 +88,7 @@
                                                 <td>{{ $address->postal_code  ?? 'N/A' }}</td>
                                                 <td>{{ $address->phone  ?? 'N/A' }}</td>
                                                 <td>
-                                                <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#addresModalUpdate" 
+                                                <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#addresModalUpdate" 
                                                     data-id="{{ $address->address_id }}" 
                                                     data-address="{{ $address->address }}"
                                                     data-address2="{{ $address->address2 }}"
@@ -95,13 +96,13 @@
                                                     data-city_id="{{ $address->city_id }}"
                                                     data-postal_code="{{ $address->postal_code }}"
                                                     data-phone="{{ $address->phone }}">
-                                                    <i class="fas fa-edit"></i> Editar
+                                                    <i class="fas fa-edit"></i> Update
                                                 </button>
                                                  <form action="{{ route('address.destroy', $address->address_id) }}" method="POST" style="display:inline;">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="btn btn-danger btn-sm">
-                                                            <i class="fas fa-trash"></i> Eliminar
+                                                            <i class="fas fa-trash"></i> Delete
                                                         </button>
                                                 </form>
                                                 </td>

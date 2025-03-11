@@ -19,7 +19,7 @@ class InventoriesController extends Controller
      * @return JsonResponse
      */
     public function index() {
-        $perPage = 150;  
+        $perPage = 250;  
         $inventoriData = Inventory::paginate($perPage); 
         $storeCounts = Inventory::all()->groupBy('store_id')->map(function ($items, $key) {
             return $items->count();  

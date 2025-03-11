@@ -6,6 +6,7 @@
     <title>Customers</title>
     <link rel="stylesheet" href="{{ asset('plugins/fontawesome-free/css/all.min.css') }}">
     <link rel="stylesheet" href="{{ asset('dist/css/adminlte.min.css') }}">
+    <link rel="icon" href="{{ asset('dist/img/CinemaStudio.png') }}" type="image/x-icon">
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -14,10 +15,10 @@
    @include('Customer.add_customer_modal')
    @include('Customer.update_customer_modal')
 
-    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <aside  class="main-sidebar sidebar-dark-primary elevation-4" style="background: linear-gradient(to bottom, #000000, #333333);">
         <a href="{{ route('index') }}" class="brand-link">
-            <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-            <span class="brand-text font-weight-light"> Movie Rental</span>
+        <img src="dist/img/CinemaStudio.png" alt="Cinema Studio Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+        <span class="brand-text font-weight-light">Cinema Studio</span>
         </a>
         @include('Sidebar')
     </aside>
@@ -35,7 +36,7 @@
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h3 class="card-title">Customer List</h3>
                         <button class="btn btn-success" data-toggle="modal" data-target="#customerModal">
-                            <i class="fas fa-plus"></i> Agregar Customer
+                            <i class="fas fa-plus"></i> Add Customer
                         </button>
                     </div>
 
@@ -66,7 +67,7 @@
                                         data-last_name="{{ $customer->last_name }}"
                                         data-email="{{ $customer->email }}"
                                         data-active="{{ $customer->active }}">
-                                        <i class="fas fa-edit"></i> Edit
+                                        <i class="fas fa-edit"></i> Update
                                     </button>
                                     <form action="{{ route('customers.destroy', $customer->customer_id) }}" method="POST" style="display: inline;">
                                         @csrf

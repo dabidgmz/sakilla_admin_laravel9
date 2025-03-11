@@ -7,15 +7,16 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <link rel="stylesheet" href="{{ asset('plugins/fontawesome-free/css/all.min.css') }}">
     <link rel="stylesheet" href="dist/css/adminlte.min.css">
+    <link rel="icon" href="{{ asset('dist/img/CinemaStudio.png') }}" type="image/x-icon">
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
     @include('Navbar')
     
-    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <aside  class="main-sidebar sidebar-dark-primary elevation-4" style="background: linear-gradient(to bottom, #000000, #333333);">
         <a href="{{ route('index') }}" class="brand-link">
-            <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-            <span class="brand-text font-weight-light">Movie Rental</span>
+        <img src="dist/img/CinemaStudio.png" alt="Cinema Studio Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+        <span class="brand-text font-weight-light">Cinema Studio</span>
         </a>
         @include('Sidebar')
     </aside>
@@ -41,15 +42,15 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">Inventory Data</h3>
-                            </div>
-                            <div class="card-body text-center">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Inventory Data</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="text-center mb-3">
                                 <button class="btn btn-success" data-toggle="modal" data-target="#addInventoryModal">
-                                    <i class="fas fa-plus"></i> Agregar Customer
+                                    <i class="fas fa-plus"></i> Add Customer
                                 </button>
-                            </div>
                             </div>
                             <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
                                 <table class="table table-bordered">
@@ -63,53 +64,50 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    @foreach($inventoriData as $data)
-                                        <tr>
-                                            <td>{{ $data->inventory_id }}</td>
-                                            <td>{{ $data->film_id }}</td>
-                                            <td>{{ $data->store_id }}</td>
-                                            <td>{{ $data->last_update }}</td>
-                                            <td>
-                                                <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editInventoryModal"
-                                                    data-id="{{ $data->inventory_id }}"
-                                                    data-film_id="{{ $data->film_id }}"
-                                                    data-store_id="{{ $data->store_id }}">
-                                                    <i class="fas fa-edit"></i> Edit
-                                                </button>
-                                                <form action="{{ route('inventories.destroy', $data->inventory_id) }}" method="POST" style="display: inline;">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button class="btn btn-danger btn-sm" type="submit">
-                                                        <i class="fas fa-trash"></i> Delete
+                                        @foreach($inventoriData as $data)
+                                            <tr>
+                                                <td>{{ $data->inventory_id }}</td>
+                                                <td>{{ $data->film_id }}</td>
+                                                <td>{{ $data->store_id }}</td>
+                                                <td>{{ $data->last_update }}</td>
+                                                <td>
+                                                    <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editInventoryModal"
+                                                        data-id="{{ $data->inventory_id }}"
+                                                        data-film_id="{{ $data->film_id }}"
+                                                        data-store_id="{{ $data->store_id }}">
+                                                        <i class="fas fa-edit"></i> Update
                                                     </button>
-                                                </form>
-                                            </td>
-                                        </tr>
+                                                    <form action="{{ route('inventories.destroy', $data->inventory_id) }}" method="POST" style="display: inline;">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button class="btn btn-danger btn-sm" type="submit">
+                                                            <i class="fas fa-trash"></i> Delete
+                                                        </button>
+                                                    </form>
+                                                </td>
+                                            </tr>
                                         @endforeach 
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="card-footer clearfix">
-                                    <ul class="pagination pagination-sm m-0 float-right">
-                                        {{-- Botón Anterior --}}
-                                        <li class="page-item {{ $inventoriData->onFirstPage() ? 'disabled' : '' }}">
-                                            <a class="page-link" href="{{ $inventoriData->previousPageUrl() }}">&laquo;</a>
-                                        </li>
-
-                                        {{-- Números de página --}}
-                                        @for ($page = 1; $page <= $inventoriData->lastPage(); $page++)
-                                            <li class="page-item {{ $page == $inventoriData->currentPage() ? 'active' : '' }}">
-                                                <a class="page-link" href="{{ $inventoriData->url($page) }}">{{ $page }}</a>
-                                            </li>
-                                        @endfor
-
-                                        {{-- Botón Siguiente --}}
-                                        <li class="page-item {{ $inventoriData ->hasMorePages() ? '' : 'disabled' }}">
-                                            <a class="page-link" href="{{ $inventoriData ->nextPageUrl() }}">&raquo;</a>
-                                        </li>
-                                    </ul>
-                            </div>
                         </div>
+                        <div class="card-footer clearfix">
+                            <ul class="pagination pagination-sm m-0 float-right">
+                                <li class="page-item {{ $inventoriData->onFirstPage() ? 'disabled' : '' }}">
+                                    <a class="page-link" href="{{ $inventoriData->previousPageUrl() }}">&laquo;</a>
+                                </li>
+                                @for ($page = 1; $page <= $inventoriData->lastPage(); $page++)
+                                    <li class="page-item {{ $page == $inventoriData->currentPage() ? 'active' : '' }}">
+                                        <a class="page-link" href="{{ $inventoriData->url($page) }}">{{ $page }}</a>
+                                    </li>
+                                @endfor
+                                <li class="page-item {{ $inventoriData ->hasMorePages() ? '' : 'disabled' }}">
+                                    <a class="page-link" href="{{ $inventoriData ->nextPageUrl() }}">&raquo;</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
                     </div>
                 </div>
 

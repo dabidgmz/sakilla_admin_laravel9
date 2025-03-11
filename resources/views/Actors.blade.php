@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="{{ asset('plugins/fontawesome-free/css/all.min.css') }}">
     <!-- Theme style -->
     <link rel="stylesheet" href="dist/css/adminlte.min.css">
+    <link rel="icon" href="{{ asset('dist/img/CinemaStudio.png') }}" type="image/x-icon">
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -19,11 +20,11 @@
     @include('Actors.add_actor_modal')
     
     <!-- Main Sidebar Container -->
-    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <aside  class="main-sidebar sidebar-dark-primary elevation-4" style="background: linear-gradient(to bottom, #000000, #333333);">
         <!-- Brand Logo -->
-        <a href="index3.html" class="brand-link">
-            <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-            <span class="brand-text font-weight-light"> Movie Rental</span>
+        <a href="{{ route('index') }}" class="brand-link">
+        <img src="dist/img/CinemaStudio.png" alt="Cinema Studio Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+        <span class="brand-text font-weight-light">Cinema Studio</span>
         </a>
 
         @include('Sidebar')
@@ -60,7 +61,7 @@
                             <div class="card-header d-flex justify-content-between align-items-center">
                                 <h5 class="m-0">Actors List</h5>
                                 <button class="btn btn-success mb-3" data-toggle="modal" data-target="#actorModal">
-                                    <i class="fas fa-plus"></i> Agregar Actor
+                                    <i class="fas fa-plus"></i> Add Actor
                                 </button>
                             </div>
                             <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
@@ -80,17 +81,17 @@
                                             <td>{{ $actor->first_name }}</td>
                                             <td>{{ $actor->last_name }}</td>
                                             <td>
-                                                <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#actorModalUpdate" 
+                                                <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#actorModalUpdate" 
                                                         data-id="{{ $actor->actor_id }}" 
                                                         data-first_name="{{ $actor->first_name }}" 
                                                         data-last_name="{{ $actor->last_name }}">
-                                                    <i class="fas fa-edit"></i> Editar
+                                                    <i class="fas fa-edit"></i> Update
                                                 </button>
                                                  <form action="{{ route('actors.destroy', $actor->actor_id) }}" method="POST" style="display:inline;">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="btn btn-danger btn-sm">
-                                                            <i class="fas fa-trash"></i> Eliminar
+                                                            <i class="fas fa-trash"></i> Delete
                                                         </button>
                                                 </form>
                                             </td>
