@@ -41,8 +41,8 @@ En esta práctica, desarrollamos un CRUD completo utilizando **Laravel 9** como 
 
 1. **Clonar el repositorio:**
    ```sh
-   git clone https://github.com/tu_usuario/tu_repositorio.git
-   cd tu_repositorio
+   git clone https://github.com/dabidgmz/sakilla_admin_laravel
+   cd sakilla_admin_laravel
    ```
 2. **Instalar dependencias de Laravel:**
    ```sh
