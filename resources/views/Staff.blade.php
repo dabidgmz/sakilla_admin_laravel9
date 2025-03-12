@@ -90,8 +90,8 @@
                                                 <td>{{ $member->store_id }}</td>
                                                 <td>{{ $member->active ? 'Active' : 'Inactive' }}</td>
                                                 <td>
-                                                <a class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editStaffModal"
-                                                    data-id="{{ $member->staff_id }}"
+                                                <a class="btn btn-warning" data-toggle="modal" data-target="#editStaffModal"
+                                                    data-id="{{ $member->staff_id }}" 
                                                     data-first_name="{{ $member->first_name }}"
                                                     data-last_name="{{ $member->last_name }}"
                                                     data-address_id="{{ $member->address_id }}"
@@ -100,9 +100,8 @@
                                                     data-store_id="{{ $member->store_id }}"
                                                     data-active="{{ $member->active }}"
                                                     data-username="{{ $member->username }}">
-                                                    <i class="fas fa-edit"></i> Update
+                                                    <i class="fas fa-edit"></i> Edit
                                                 </a>
-
                                                     <form action="{{ route('staff.destroy', $member->staff_id) }}" method="POST" style="display: inline-block;">
                                                         @csrf
                                                         @method('DELETE')
@@ -345,7 +344,7 @@ $(document).on('click', '.editStaffBtn', function () {
     $('#editStaffModal input[name="username"]').val($(this).data('username'));
 
     let form = $('#editStaffModal form');
-    let action = form.attr('action').replace('undefined', id)
+    let action = form.attr('action').replace('undefined', id);
     form.attr('action', action);
 });
 
