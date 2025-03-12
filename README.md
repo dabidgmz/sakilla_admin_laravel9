@@ -10,9 +10,7 @@
 
 En esta práctica, desarrollamos un CRUD completo utilizando **Laravel 9** como framework backend, **MySQL Workbench** para la gestión de la base de datos Sakila, y **AdminLTE v3.2.0** para la interfaz de usuario.
 
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/your-image.png" width="700" alt="Vista previa del proyecto">
-</p>
+
 
 ## Tecnologías Utilizadas
 
