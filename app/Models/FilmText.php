@@ -13,6 +13,7 @@ class FilmText extends Model
     protected $table = 'film_text';
     protected $primaryKey = 'film_id';
     public $incrementing = false;
+    public $timestamps = false;
 
     protected $fillable = [
         'film_id',

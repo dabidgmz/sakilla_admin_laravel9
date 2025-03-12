@@ -60,8 +60,8 @@ class FilmsTextsController extends Controller
             'description' => 'required|string',
         ]);
     
-        
-        $filmId = FilmText::latest()->first()->film_id; 
+        //Buscar el id más alto y sumarle uno
+        $filmId = FilmText::max('film_id') + 1;
     
         // Crea el nuevo texto de la película
         $filmText = FilmText::create([
