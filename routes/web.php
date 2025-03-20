@@ -179,3 +179,7 @@ Route::get('Forgot', function () {
 Route::get('Recover', function () {
     return view('User.recover_password');
 })->name('User.recover_password');
+
+Route::get('CodeVerify', function () {
+    return view('User.code_verify');
+})->name('User.code_verify');
