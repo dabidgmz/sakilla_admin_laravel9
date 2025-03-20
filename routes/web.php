@@ -163,3 +163,11 @@ Route::delete('/staff/{id}', [StaffController::class, 'destroy'])->name('staff.d
 
 Route::get('/Stores',[StoresController::class,'index'])->name('Stores');
 Route::get('/stores', [StoresController::class, 'index'])->name('stores.index');
+
+Route::get('Login', function () {
+    return view('User.login');
+})->name('User.login');
+
+Route::get('Register', function () {
+    return view('User.register');
+})->name('User.register');
