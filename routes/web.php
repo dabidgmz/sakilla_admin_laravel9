@@ -171,3 +171,11 @@ Route::get('Login', function () {
 Route::get('Register', function () {
     return view('User.register');
 })->name('User.register');
+
+Route::get('Forgot', function () {
+    return view('User.forgot_password');
+})->name('User.forgot_password');
+
+Route::get('Recover', function () {
+    return view('User.recover_password');
+})->name('User.recover_password');
