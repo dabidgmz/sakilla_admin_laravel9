@@ -85,6 +85,7 @@
       </div>
 
       <a href="{{ route('User.login') }}"" class="text-center">I already have a membership</a>
+      <div class="h-captcha" data-sitekey="your_site_key"></div>
     </div>
     <!-- /.form-box -->
   </div><!-- /.card -->
@@ -97,5 +98,7 @@
 <script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->
 <script src="../../dist/js/adminlte.min.js"></script>
+
+<script src="https://js.hcaptcha.com/1/api.js" async defer></script>
 </body>
 </html>
