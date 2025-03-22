@@ -183,3 +183,7 @@ Route::get('Recover', function () {
 Route::get('CodeVerify', function () {
     return view('User.code_verify');
 })->name('User.code_verify');
+
+Route::get('Home', function () {
+    return view('Home');
+})->name('Home');
