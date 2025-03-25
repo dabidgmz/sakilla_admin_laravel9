@@ -24,17 +24,13 @@ class ActivateAccountRequest extends FormRequest
     public function rules()
     {
         return [
-            'id' => [
+            'staff_id' => [
                 'required',
                 'string',
             ],
-            'verification-code' => [
+            'temp_code' => [
                 'required',
                 'numeric',
-            ],
-            'h-captcha-response' => [
-                'required',
-                'string',
             ],
         ];
     }

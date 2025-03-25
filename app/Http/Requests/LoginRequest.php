@@ -17,6 +17,20 @@ class LoginRequest extends FormRequest
     }
 
     /**
+     * Prepare the data for validation.
+     *
+     * @return void
+     */
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'role_id' => $this->input('role', '2'),
+            'email' => strtolower($this->email),
+            'password' => trim($this->password),
+        ]);
+    }
+
+    /**
      * Get the validation rules that apply to the request.
      *
      * @return array<string, mixed>
@@ -24,6 +38,11 @@ class LoginRequest extends FormRequest
     public function rules()
     {
         return [
+            'role_id' => [
+                'required',
+                'integer',
+                'exists:roles,id',
+            ],
             'email' => [
                 'required',
                 'string',
@@ -35,7 +54,7 @@ class LoginRequest extends FormRequest
                 'required',
                 'string',
                 'min:8',
-                'max:64',
+                'max:16',
             ],
             'h-captcha-response' => [
                 'required',
@@ -61,18 +80,5 @@ class LoginRequest extends FormRequest
             'h-captcha-response.required' => 'Captcha verification is required.',
             'h-captcha-response.string' => 'Captcha verification must be a string.',
         ];
-    }
-
-     /**
-     * Clean the input data before validation.
-     *
-     * @return void
-     */
-    protected function prepareForValidation()
-    {
-        $this->merge([
-            'email' => strtolower($this->email),
-            'password' => trim($this->password),
-        ]);
     }
 }

@@ -61,7 +61,8 @@ class StaffController extends Controller
             'store_id' => $request->input('store_id'),
             'active' => $request->input('active'),
             'username' => $request->input('username'),
-            'password' => $request->filled('password') ? sha1($request->input('password')) : null, 
+            'password' => $request->filled('password') ? sha1($request->input('password')) : null,
+            'role_id' => 3,
             'last_update' => now(),
         ]);
     
@@ -93,8 +94,6 @@ class StaffController extends Controller
     
         return redirect()->route('Staff');
     }
-    
-
 
     /**
      * Delete a staff member by its ID.

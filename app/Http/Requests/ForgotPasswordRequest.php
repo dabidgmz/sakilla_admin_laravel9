@@ -3,9 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-class VerifyCodeRequest extends FormRequest
+class ForgotPasswordRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -17,16 +16,15 @@ class VerifyCodeRequest extends FormRequest
         return true;
     }
 
-    /**
-     * Prepare the data for validation.
+     /**
+     * Clean the input data before validation.
      *
      * @return void
      */
     protected function prepareForValidation()
     {
-        // Set the default value for the type field if it is not provided in the request data or is empty
         $this->merge([
-            'type' => $this->input('type', 'login'),
+            'email' => strtolower($this->email),
         ]);
     }
 
@@ -38,18 +36,16 @@ class VerifyCodeRequest extends FormRequest
     public function rules()
     {
         return [
-            'staff_id' => [
+            'email' => [
                 'required',
                 'string',
+                'email',
+                'max:50',
+                'lowercase',
             ],
-            'temp_code' => [
-                'required',
-                'numeric',
-            ],
-            'type' => [
+            'h-captcha-response' => [
                 'required',
                 'string',
-                Rule::in(['login', 'recovery']),
             ],
         ];
     }
@@ -64,7 +60,11 @@ class VerifyCodeRequest extends FormRequest
         return [
             '*.required' => ':attribute is required.',
             '*.string' => ':attribute must be a string.',
-            '*.numeric' => ':attribute must be a number.',
+            '*.email' => ':attribute must be a valid email address.',
+            '*.max' => ':attribute must not exceed :max characters.',
+            '*.lowercase' => ':attribute must be in lowercase.',
+            'h-captcha-response.required' => 'Captcha verification is required.',
+            'h-captcha-response.string' => 'Captcha verification must be a string.',
         ];
     }
 }

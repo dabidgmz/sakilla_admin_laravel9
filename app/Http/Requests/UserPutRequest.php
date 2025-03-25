@@ -3,14 +3,10 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class RegisterRequest extends FormRequest
+class UserPutRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
     public function authorize()
     {
         return true;
@@ -18,104 +14,102 @@ class RegisterRequest extends FormRequest
 
     /**
      * Clean the input data before validation.
-     *
-     * @return void
      */
     protected function prepareForValidation()
     {
         $this->merge([
-            'first_name' => cleanStringSpaces($this->first_name),
-            'second_name' => cleanStringSpaces($this->second_name),
-            'last_name' => cleanStringSpaces($this->last_name),
-            'password' => trim($this->password),
-            'email' => strtolower($this->email),
+            'first_name' => $this->first_name ? cleanStringSpaces($this->first_name) : null,
+            'last_name' => $this->last_name ? cleanStringSpaces($this->last_name) : null,
+            'email' => $this->email ? strtolower($this->email) : null,
+            'password' => $this->password ? trim($this->password) : null,
         ]);
     }
 
     /**
      * Get the validation rules that apply to the request.
-     *
-     * @return array<string, mixed>
      */
     public function rules()
     {
         return [
             'first_name' => [
-                'required',
+                'nullable',
                 'string',
                 'min:3',
                 'max:45',
                 'regex:/^[a-zA-Z\s]+$/',
             ],
             'last_name' => [
-                'required',
+                'nullable',
                 'string',
                 'min:3',
                 'max:45',
                 'regex:/^[a-zA-Z\s]+$/',
             ],
+            'address_id' => [
+                'nullable',
+                'integer',
+                'exists:address,address_id',
+            ],
+            'picture' => [
+                'nullable',
+                'string',
+                'max:45',
+            ],
             'email' => [
-                'required',
+                'nullable',
                 'string',
                 'email',
                 'max:50',
                 'lowercase',
-                'unique:staff,email',
             ],
-            'password' => [
-                'required',
-                'string',
-                'min:8',
-                'max:16',
-                'confirmed',
-                'regex:/^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])/'
+            'store_id' => [
+                'nullable',
+                'integer',
+                'exists:store,store_id',
+            ],
+            'active' => [
+                'nullable',
+                'boolean',
             ],
             'username' => [
-                'required',
+                'nullable',
                 'string',
                 'min:3',
                 'max:16',
                 'regex:/^[a-zA-Z0-9_]+$/',
-                'unique:staff,username',
             ],
-            'address_id' => [
-                'required',
-                'integer',
-                'exists:address,address_id',
-            ],
-            'store_id' => [
-                'required',
-                'integer',
-                'exists:store,store_id',
-            ],
-            'h-captcha-response' => [
-                'required',
+            'password' => [
+                'nullable',
                 'string',
+                'min:8',
+                'max:16',
+                'regex:/^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])/',
+            ],
+            'role_id' => [
+                'nullable',
+                'integer',
+                'exists:roles,id',
+                Rule::in([2, 3]),
             ],
         ];
     }
 
     /**
      * Get the validation messages that apply to the request.
-     *
-     * @return array<string, string>
      */
     public function messages()
     {
         return [
-            '*.required' => ':attribute is required.',
             '*.string' => ':attribute must be a string.',
             '*.integer' => ':attribute must be an integer.',
+            '*.boolean' => ':attribute must be true or false.',
             '*.exists' => ':attribute is invalid.',
             '*.min' => ':attribute must be at least :min characters.',
             '*.max' => ':attribute must not be greater than :max characters.',
-            '*.unique' => ':attribute is already in use.',
-            '*.lowercase' => ':attribute must be in lowercase.',
             '*.regex' => ':attribute format is invalid.',
+            '*.lowercase' => ':attribute must be in lowercase.',
             'email.email' => 'Email must be a valid address.',
-            'password.confirmed' => 'The passwords do not match.',
             'password.regex' => 'The password does not meet the security requirements.',
-            'h-captcha-response.required' => 'Captcha verification is required.',
         ];
     }
 }
