@@ -21,8 +21,8 @@ class StaffController extends Controller
      */
     public function index() {
         // Get all staff members with pagination
-        $perPage = 810;
-        $staff = Staff::paginate($perPage);
+        $perPage = 20;
+        $staff = Staff::where('role_id', 3)->paginate($perPage);
 
         return View('Staff', compact('staff'));
     }
