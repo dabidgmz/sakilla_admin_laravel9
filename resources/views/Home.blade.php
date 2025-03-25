@@ -95,7 +95,7 @@
 <body>
     <div class="header">
         <img src="dist/img/CinemaStudio.png" alt="Cinema Studio" class="logo">
-        <a href="{{ route('User.login') }}" class="btn">Login</a>
+        
     </div>
     
     <div class="d-flex justify-content-center">

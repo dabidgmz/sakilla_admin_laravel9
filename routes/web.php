@@ -187,3 +187,7 @@ Route::get('CodeVerify', function () {
 Route::get('Home', function () {
     return view('Home');
 })->name('Home');
+
+Route::get('Profile', function () {
+    return view('Customer.me_customer');
+})->name('Customer.me_customer');
