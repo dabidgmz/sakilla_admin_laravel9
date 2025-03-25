@@ -29,8 +29,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('index');
-})->name('index');
+    return view('Home');
+})->name('home');
 
 # Actors views
 Route::get('/Actors', function () {
@@ -183,3 +183,11 @@ Route::get('Recover', function () {
 Route::get('CodeVerify', function () {
     return view('User.code_verify');
 })->name('User.code_verify');
+
+Route::get('Home', function () {
+    return view('Home');
+})->name('Home');
+
+Route::get('Profile', function () {
+    return view('Customer.me_customer');
+})->name('Customer.me_customer');

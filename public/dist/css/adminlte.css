@@ -34966,32 +34966,31 @@ a.close.disabled, a.disabled.mailbox-attachment-close {
 
 .login-logo a,
 .register-logo a {
-  color: #495057;
+  color: #27261c;
+  font-family: Arial, sans-serif;
+  top: 0;
 }
 
 .login-page,
 .register-page {
-  -ms-flex-align: center;
-  align-items: center;
-  background-color: #e9ecef;
-  display: -ms-flexbox;
   display: flex;
-  -ms-flex-direction: column;
   flex-direction: column;
-  height: 100vh;
-  -ms-flex-pack: center;
-  justify-content: center;
+  align-items: center;
+  justify-content: flex-start; /* Asegura que el contenido comience desde arriba */
+  min-height: calc(100vh + 30px);
+  background-color: #272626;
+  padding-top: 50px; /* Espacio de 30px desde la parte superior */
 }
 
 .login-box,
 .register-box {
-  width: 360px;
+  width: 380px;
 }
 
 @media (max-width: 576px) {
   .login-box,
   .register-box {
-    margin-top: .5rem;
+    margin-top: .1rem;
     width: 90%;
   }
 }
