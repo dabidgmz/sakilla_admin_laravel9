@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css">
     <style>
     body {
-        background-color: #121212;
+        background-color:rgb(39, 38, 38);
         color: white;
         font-family: Arial, sans-serif;
     }
@@ -17,7 +17,7 @@
         justify-content: space-between;
         align-items: center;
         padding: 15px;
-        background: #222;
+        background: rgb(27, 25, 25);
     }
     .logo {
         width: 60px;
@@ -62,7 +62,7 @@
         box-shadow: 0px 10px 20px rgba(255, 255, 255, 0.2);
     }
     .movie-card img {
-        width: 80%;
+        width: 100%;
         height: 400px;
         object-fit: cover; 
     }
@@ -83,12 +83,19 @@
     .tab-content {
         padding-top: 20px;
     }
+    .btn {
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-decoration: none;
+        transition: background-color 0.3s ease-in-out;
+    }
 </style>
 </head>
 <body>
     <div class="header">
         <img src="dist/img/CinemaStudio.png" alt="Cinema Studio" class="logo">
-        <p>¡Bienvenido a Cinema Studio!</p>
+        <a href="{{ route('User.login') }}" class="btn">Login</a>
     </div>
     
     <div class="d-flex justify-content-center">
