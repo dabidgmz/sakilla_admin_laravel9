@@ -51,9 +51,18 @@
       <div class="card-body register-card-body">
         <p class="login-box-msg">Register a new membership</p>
 
-        <form action="../../index.html" method="post">
+        <form method="POST" action="{{ route('RegisterStaff') }}">
+          @csrf
           <div class="input-group mb-3">
             <input type="text" class="form-control" id="first_name" name="first_name" placeholder="Name">
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-user"></span>
+              </div>
+            </div>
+          </div>
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" id="username" name="username" placeholder="User Name">
             <div class="input-group-append">
               <div class="input-group-text">
                 <span class="fas fa-user"></span>
@@ -85,13 +94,25 @@
             </div>
           </div>
           <div class="input-group mb-3">
-            <input type="password" class="form-control" id="password'" name="password'" placeholder="Password">
-            <div class="input-group-append">
-              <div class="input-group-text">
-                <span class="fas fa-lock"></span>
+              <select class="form-control" id="store_id" name="store_id" required>
+                  <option value="">Select Store</option>
+                  <option value="1">1 , MySakila Drive</option>
+                  <option value="2">2 , MySql Boulevard</option>
+              </select>
+              <div class="input-group-append">
+                <div class="input-group-text">
+                <span class="fas fa-store"></span>
+                </div>
               </div>
             </div>
-          </div>
+            <div class="input-group mb-3">
+              <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+              <div class="input-group-append">
+                <div class="input-group-text">
+                <span class="fas fa-lock"></span>
+                </div>
+              </div>
+            </div>
           <div class="input-group mb-3">
             <input type="password" class="form-control" placeholder="Retype password">
             <div class="input-group-append">
@@ -130,7 +151,15 @@
 <script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->
 <script src="../../dist/js/adminlte.min.js"></script>
-
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
 </body>
 </html>

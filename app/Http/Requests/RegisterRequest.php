@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Log;
 
 class RegisterRequest extends FormRequest
 {
@@ -13,6 +14,7 @@ class RegisterRequest extends FormRequest
      */
     public function authorize()
     {
+        Log::info('Authorize method called in RegisterRequest.');
         return true;
     }
 
@@ -21,16 +23,24 @@ class RegisterRequest extends FormRequest
      *
      * @return void
      */
-    protected function prepareForValidation()
-    {
-        $this->merge([
-            'first_name' => cleanStringSpaces($this->first_name),
-            'second_name' => cleanStringSpaces($this->second_name),
-            'last_name' => cleanStringSpaces($this->last_name),
-            'password' => trim($this->password),
-            'email' => strtolower($this->email),
-        ]);
-    }
+    // protected function prepareForValidation()
+    // {
+    //     Log::info('Preparing data for validation in RegisterRequest.', [
+    //         'original_data' => $this->all(),
+    //     ]);
+
+    //     $this->merge([
+    //         'first_name' => cleanStringSpaces($this->first_name),
+    //         'second_name' => cleanStringSpaces($this->second_name),
+    //         'last_name' => cleanStringSpaces($this->last_name),
+    //         'password' => trim($this->password),
+    //         'email' => strtolower($this->email),
+    //     ]);
+
+    //     Log::info('Data after preparation in RegisterRequest.', [
+    //         'prepared_data' => $this->all(),
+    //     ]);
+    // }
 
     /**
      * Get the validation rules that apply to the request.
@@ -39,6 +49,7 @@ class RegisterRequest extends FormRequest
      */
     public function rules()
     {
+        Log::info('Validation rules method called in RegisterRequest.');
         return [
             'first_name' => [
                 'required',
@@ -102,6 +113,7 @@ class RegisterRequest extends FormRequest
      */
     public function messages()
     {
+        Log::info('Validation messages method called in RegisterRequest.');
         return [
             '*.required' => ':attribute is required.',
             '*.string' => ':attribute must be a string.',

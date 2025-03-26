@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ActorsController;
 use App\Http\Controllers\AddressesController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\CitiesController;
 use App\Http\Controllers\CustomersController;
@@ -171,6 +172,8 @@ Route::get('Login', function () {
 Route::get('Register', function () {
     return view('User.register');
 })->name('User.register');
+
+Route::post('RegisterStaff', [AuthController::class, 'register'])->name('RegisterStaff');
 
 Route::get('Forgot', function () {
     return view('User.forgot_password');
