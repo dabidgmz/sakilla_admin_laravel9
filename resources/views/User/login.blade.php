@@ -42,7 +42,6 @@
       <a href="{{ route('home') }}">
           <img src="dist/img/CinemaStudio.png" alt="Cinema Studio" class="logo">
       </a>
-      <a href="{{ route('User.register') }}" class="btn">Register</a>
   </div>
   <div class="hold-transition login-page">  
   <div class="login-box">
@@ -94,7 +93,7 @@
         <p class="mb-0">
           <a href="{{ route('User.forgot_password') }}" class="text-center">I forgot my password</a>
         </p>
-        <div class="h-captcha" data-sitekey="your_site_key"></div>
+        <div class="h-captcha" data-sitekey="bb4246a6-ef30-468e-8172-9b88f49ac424"></div>
       </div>
       <!-- /.login-card-body -->
     </div>

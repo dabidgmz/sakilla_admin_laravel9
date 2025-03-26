@@ -55,7 +55,7 @@
                 </div>
                 
                 <div class="form-group text-center mt-3">
-                    <div class="h-captcha" data-sitekey="your_site_key"></div>
+                    <div class="h-captcha" data-sitekey="bb4246a6-ef30-468e-8172-9b88f49ac424"></div>
                 </div>
                 
                 <div class="row">
