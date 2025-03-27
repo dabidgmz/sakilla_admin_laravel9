@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ActorsController;
 use App\Http\Controllers\AddressesController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\CitiesController;
 use App\Http\Controllers\CountriesController;
@@ -160,5 +161,12 @@ Route::group(['prefix' => '/v1'], function() {
         Route::post('/', 'store')->name('stores.store');
         Route::put('/{id}', 'update')->whereNumber('id')->name('stores.update');
         Route::delete('/{id}', 'destroy')->whereNumber('id')->name('stores.destroy');
+    });
+
+    // Auth routes
+    Route::group(['prefix' => '/auth', 'controller' => AuthController::class], function() {
+        Route::post('/login', 'login')->name('auth.login');
+        Route::post('/register', 'register')->name('auth.register');
+        Route::post('/logout', 'logout')->name('auth.logout');
     });
 });

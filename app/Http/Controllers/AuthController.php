@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Illuminate\Support\Facades\Log;
 
 class AuthController extends Controller
 {
@@ -151,43 +152,56 @@ class AuthController extends Controller
      * @return \Illuminate\Http\RedirectResponse Redirect the user to the sign-in page.
      */
     public function register(RegisterRequest $request) {
+        // Log the start of the registration process
+        Log::info('Starting user registration.');
+
         // Get validated user data
         $formData = $request->validated();
+        Log::info('Validated form data.', $formData);
 
         // Verify the hCaptcha response token with the hCaptcha API
         $captchaResponse = verifyCaptcha($formData['h-captcha-response']);
+        Log::info('hCaptcha verification response.', $captchaResponse);
 
         // Check if the hCaptcha verification failed
-        if (!$captchaResponse['success'])
+        if (!$captchaResponse['success']) {
+            Log::warning('Captcha verification failed.');
             return back()->withErrors(['h-captcha-response' => 'Captcha verification failed.']);
+        }
 
         // Create a new user
-        $user = Staff::create([
-            'first_name' => $formData['first_name'],
-            'second_name' => $formData['second_name'],
-            'last_name' => $formData['last_name'],
-            'address_id' => $formData['address_id'],
-            'email' => $formData['email'],
-            'store_id' => $formData['store_id'],
-            'active' => 0,
-            'username' => $formData['username'],
-            'password' => sha1($formData['password']),
-            'role_id' => 2,
-        ]);
-
-        // Check if the user was not created
-        if (!$user)
+        try {
+            $user = Staff::create([
+                'first_name' => $formData['first_name'],
+                'second_name' => $formData['second_name'],
+                'last_name' => $formData['last_name'],
+                'address_id' => $formData['address_id'],
+                'email' => $formData['email'],
+                'store_id' => $formData['store_id'],
+                'active' => 0,
+                'username' => $formData['username'],
+                'password' => sha1($formData['password']),
+                'role_id' => 2,
+            ]);
+            Log::info('User created successfully.', ['user_id' => $user->staff_id]);
+            return redirect()->to('Staff');
+        } catch (\Exception $e) {
+            Log::error('Failed to create user.', ['error' => $e->getMessage()]);
             return back()->withErrors(['registration' => 'Failed to register user.'])->withInput();
+        }
 
         // Encrypt the user's ID
         $encryptedId = Crypt::encryptString($user->staff_id);
+        Log::info('User ID encrypted.', ['encrypted_id' => $encryptedId]);
 
         // Generate a signed URL for the account activation page
         $activateAccountUrl = URL::temporarySignedRoute('activate-account', now()->addMinutes(15), [
             'staff_id' => $encryptedId
         ]);
+        Log::info('Generated activation URL.', ['url' => $activateAccountUrl]);
 
         // Redirect the user to the account activation page
+        Log::info('Redirecting user to account activation page.');
         return redirect($activateAccountUrl);
     }
 
