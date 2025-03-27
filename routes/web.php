@@ -9,6 +9,7 @@ use App\Http\Controllers\FilmsController;
 use App\Http\Controllers\FilmsActorsController;
 use App\Http\Controllers\FilmsCategoriesController;
 use App\Http\Controllers\FilmsTextsController;
+use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\LanguagesController;
 use App\Http\Controllers\InventoriesController;
 use App\Http\Controllers\PaymentsController;
@@ -191,3 +192,6 @@ Route::get('Home', function () {
 Route::get('Profile', function () {
     return view('Customer.me_customer');
 })->name('Customer.me_customer');
+
+Route::get('/auth/google',[GoogleController::class,'redirectToGoogle'])->name('google.login');
+Route::get('/auth/google/callback',[GoogleController::class,'handleGoogleCallback'])->name('google.callback');
