@@ -51,7 +51,7 @@
       <div class="card-body register-card-body">
         <p class="login-box-msg">Register a new membership</p>
 
-        <form method="POST" action="{{ route('RegisterStaff') }}">
+        <form method="POST" action="{{ route('register.staff') }}">
           @csrf
           <div class="input-group mb-3">
             <input type="text" class="form-control" id="first_name" name="first_name" placeholder="Name">
@@ -94,6 +94,18 @@
             </div>
           </div>
           <div class="input-group mb-3">
+              <select class="form-control" id="address_id" name="address_id" required>
+                  <option value="">Select Store</option>
+                  <option value="1">1 , MySakila Drive</option>
+                  <option value="2">2 , MySql Boulevard</option>
+              </select>
+              <div class="input-group-append">
+                <div class="input-group-text">
+                <span class="fas fa-store"></span>
+                </div>
+              </div>
+            </div>
+            <div class="input-group mb-3">
               <select class="form-control" id="store_id" name="store_id" required>
                   <option value="">Select Store</option>
                   <option value="1">1 , MySakila Drive</option>
@@ -113,21 +125,20 @@
                 </div>
               </div>
             </div>
-          <div class="input-group mb-3">
-            <input type="password" class="form-control" placeholder="Retype password">
-            <div class="input-group-append">
-              <div class="input-group-text">
-                <span class="fas fa-lock"></span>
-              </div>
+            <div class="input-group mb-3">
+                <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" placeholder="Confirm Password" required>
+                <div class="input-group-append">
+                    <div class="input-group-text">
+                        <span class="fas fa-lock"></span>
+                    </div>
+                </div>
             </div>
-          </div>
           <div class="row">
               <div class="col-12 text-center">
               <button type="submit" class="btn btn-primary btn-block">Register</button>
               </div>
           </div>
         </form>
-
         <div class="social-auth-links text-center">
           <p>- OR -</p>
           <a href="#" class="btn btn-block btn-danger">
@@ -137,7 +148,6 @@
         </div>
 
         <a href="{{ route('User.login') }}"" class="text-center">I already have a membership</a>
-        <div class="h-captcha" data-sitekey="bb4246a6-ef30-468e-8172-9b88f49ac424"></div>
       </div>
       <!-- /.form-box -->
     </div><!-- /.card -->
@@ -160,6 +170,6 @@
         </ul>
     </div>
 @endif
-<script src="https://js.hcaptcha.com/1/api.js" async defer></script>
+<script src="https://js.hcaptcha.com/1/api.js?hl=en" async defer></script>
 </body>
 </html>

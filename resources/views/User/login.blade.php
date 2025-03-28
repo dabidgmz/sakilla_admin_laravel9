@@ -52,7 +52,7 @@
       <div class="card-body login-card-body">
         <p class="login-box-msg">Sign in to start your session</p>
 
-        <form action="{{route ('User.login')}}" method="post">
+        <form action="{{ route('User.login') }}" method="POST">
           @csrf
           <div class="input-group mb-3">
             <input type="email" id="email" name="email" class="form-control" placeholder="Email">
@@ -93,7 +93,6 @@
         <p class="mb-0">
           <a href="{{ route('User.forgot_password') }}" class="text-center">I forgot my password</a>
         </p>
-        <div class="h-captcha" data-sitekey="bb4246a6-ef30-468e-8172-9b88f49ac424"></div>
       </div>
       <!-- /.login-card-body -->
     </div>

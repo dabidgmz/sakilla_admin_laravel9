@@ -52,10 +52,12 @@
         </div>
         <div class="email-body">
             <h3>Hello, {{ $name }}</h3>
-            <p>Your verification code is:</p>
-            <p class="verification-code">{{ $verificationCode }}</p>
-            <p>Please enter this code to verify your email.</p>
+            <p>Hello {{ $name }},</p>
+            <p>Thank you for registering with us! To activate your account, please click the link below:</p>
+            <a href="{{ $activationUrl }}">Activate My Account</a>
+            <p>If you did not create this account, please ignore this email.</p>
         </div>
     </div>
 </body>
 </html>
+

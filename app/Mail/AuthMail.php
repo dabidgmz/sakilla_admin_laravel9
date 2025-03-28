@@ -14,17 +14,17 @@ class AuthMail extends Mailable
     use Queueable, SerializesModels;
 
     public string $name; // The user's name
-    public int $verificationCode; // The user's verification code
+    public string $activationUrl;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(string $name, int $verificationCode)
+    public function __construct(string $name,string $activationUrl)
     {
         $this->name = $name;
-        $this->verificationCode = $verificationCode;
+        $this->activationUrl = $activationUrl;
     }
 
     /**
@@ -35,11 +35,10 @@ class AuthMail extends Mailable
     public function envelope()
     {
         return new Envelope(
-            subject: 'Auth Code',
+            subject: 'Activate Your Account',
             from: new Address(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME')),
         );
     }
-
     /**
      * Get the message content definition.
      *
@@ -48,7 +47,11 @@ class AuthMail extends Mailable
     public function content()
     {
         return new Content(
-            view: 'mails/auth_mail',
+            view: 'mails.auth_mail', 
+            with: [
+                'name' => $this->name,
+                'activationUrl' => $this->activationUrl,
+            ]
         );
     }
 

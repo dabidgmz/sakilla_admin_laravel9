@@ -34,6 +34,9 @@ Route::get('/', function () {
     return view('Home');
 })->name('home');
 
+Route::get('index', function () {
+    return view('index');
+})->name('index');
 # Actors views
 Route::get('/Actors', function () {
     return view('Actors');
@@ -170,11 +173,20 @@ Route::get('Login', function () {
     return view('User.login');
 })->name('User.login');
 
+
+Route::post('Login', [AuthController::class, 'login'])->name('User.login');
+Route::get('/activate-account', [AuthController::class, 'activateAccount'])->name('activate-account');
+Route::post('/verifyCode', [AuthController::class, 'verifyCode'])->name('verify-code');
+
 Route::get('Register', function () {
     return view('User.register');
 })->name('User.register');
 
-Route::post('RegisterStaff', [AuthController::class, 'register'])->name('RegisterStaff');
+Route::post('register-staff', [AuthController::class, 'register'])->name('register.staff');
+
+Route::get('activate-account/{staff_id}', [AuthController::class, 'activateAccount'])
+    ->name('activate-account');
+
 
 Route::get('Forgot', function () {
     return view('User.forgot_password');

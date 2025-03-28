@@ -18,6 +18,10 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Redis;
 
 class AuthController extends Controller
 {
@@ -29,63 +33,63 @@ class AuthController extends Controller
      * @param h-captcha-response string The hCaptcha response token.
      * @return \Illuminate\Http\RedirectResponse Redirect the user to the verification code page.
      */
-    public function login(LoginRequest $request) {
-        // Get validated user data
-        $formData = $request->validated();
+    public function login(Request $request) {
+        Log::info('Login attempt started.');
 
-        // Verify the hCaptcha response token with the hCaptcha API
-        $captchaResponse = verifyCaptcha($formData['h-captcha-response']);
+        $loginData = $request->validate([
+            'email' => 'required|string|email',
+            'password' => 'required|string|min:8'
+        ]);
 
-        // Check if the hCaptcha verification failed
-        if (!$captchaResponse['success'])
-            return back()->withErrors(['h-captcha-response' => 'Captcha verification failed.']);
+        Log::info('Login data validated.', ['email' => $loginData['email']]);
 
-        // Get the user from the database by email
-        $user = Staff::where('email', $formData['email'])->and('role_id', $formData['role_id'])->first();
+        $user = Staff::where('email', $loginData['email'])->first();
 
-        // Check if the user was not found or the password is incorrect
-        if (!$user || !sha1($formData['password']) === $user->password)
+        if (!$user) {
+            Log::warning('User not found.', ['email' => $loginData['email']]);
             return back()->withErrors(['credentials' => 'Invalid email or password.'])->withInput();
+        }
 
-        // Generate a random 6-digit verification code
+        Log::info('User found.', ['email' => $loginData['email'], 'staff_id' => $user->staff_id]);
+
+        
+        if (sha1($loginData['password']) !== $user->password) {
+            Log::warning('Invalid password.', ['email' => $loginData['email']]);
+            return back()->withErrors(['credentials' => 'Invalid email or password.'])->withInput();
+        }
+
+        Log::info('Password verified successfully.', ['email' => $loginData['email']]);
+
         $tempCode = rand(100000, 999999);
-
-        // Save the verification code to the user's record
-        $user->temp_code = Hash::make($tempCode);
+        $user->temp_code = Hash::make($tempCode); 
         $user->last_update = now();
         $user->save();
 
-        // Check if the user's email is not verified
-        if ($user->active === 1) {
-            // Send the verification code to the user's email
-            Mail::to($user->email)->send(new VerifyMail($user->first_name, $tempCode));
+        Log::info('Temporary code generated and saved.', ['email' => $loginData['email'], 'temp_code' => $tempCode]);
 
-            // Encrypt the user's ID
-            $encryptedId = Crypt::encryptString($user->staff_id);
-
-            // Generate a signed URL for the account activation page
-            $activateAccountUrl = URL::temporarySignedRoute('activate-account', now()->addMinutes(15), [
-                'staff_id' => $encryptedId
-            ]);
-
-            // Redirect the user to the account activation page
-            return redirect($activateAccountUrl);
-        }
-
-        // Send the verification code to the user's email
-        Mail::to($user->email)->send(new AuthMail($user->first_name, $tempCode));
-
-        // Encrypt the user's ID
         $encryptedId = Crypt::encryptString($user->staff_id);
 
-        // Generate a signed URL for the verification code page
-        $verifyCodeUrl = URL::temporarySignedRoute('verify-code', now()->addMinutes(15), [
+        if ($user->active === 1) {
+            Log::info('User is active. Sending verification email.', ['email' => $loginData['email']]);
+            Mail::to($user->email)->send(new VerifyMail($user->first_name, $tempCode));
+
+            Log::info('Verification email sent.', ['email' => $loginData['email']]);
+            return redirect()->route('User.code_verify');
+        }
+
+        Log::info('User is inactive. Sending account activation email.', ['email' => $loginData['email']]);
+
+        $activateAccountUrl = URL::temporarySignedRoute('activate-account', now()->addMinutes(15), [
             'staff_id' => $encryptedId
         ]);
 
-        // Redirect the user to the verification code page
-        return redirect($verifyCodeUrl);
+        Mail::to($user->email)->send(new AuthMail($user->first_name, $activateAccountUrl));
+
+        Log::info('Account activation email sent.', ['email' => $loginData['email']]);
+
+        return back()->with('message', 'Check your email to activate your account.');
     }
+    
 
     /**
      * Check if the user's verification code is correct.
@@ -95,47 +99,41 @@ class AuthController extends Controller
      * @param h-captcha-response string The hCaptcha response token.
      * @return \Illuminate\Http\RedirectResponse Redirect the user to the home page.
      */
-    public function verifyCode(VerifyCodeRequest $request) {
-        // Validate the request data
-        $formData = $request->validated();
-
-        $staffId = (int) Crypt::decryptString($formData['staff_id']); // Decrypt the user ID
-        $user = Staff::where('staff_id', $staffId)->and('role_id', 2)->first(); // Get the user from the database
-
-        // Check if the user exists
-        if (!$user)
-            return back()->withErrors(['staff_id' => 'User not found.']);
-
-        // Check if the verification code is correct
-        if (!Hash::check($formData['temp_code'], $user->temp_code))
-            return back()->withErrors(['temp_code' => 'The verification code is incorrect.'])->withInput();
-
-        // Remove the verification code
-        $user->temp_code = null;
-        $user->last_update = now();
-        $user->save();
-
-        if ($formData['type'] === 'login') {
-            $token = JWTAuth::fromUser($user); // Generate a JWT token for the user
-            $cookie = cookie('token', $token, 60 * 24, null, null, true, true, false, 'Strict'); // Create a cookie with the JWT token
-
-            // Redirect the user to the home page
-            return redirect()->route('home')->withCookie($cookie);
+    public function verifyCode(Request $request) {
+        Log::info('Verification code process started.');
+        
+        $verifyData = $request->validate([
+            'temp_code' => 'required|string|min:6|max:6',
+            'type' => 'required|string'
+        ]);
+    
+        try {
+            
+            $user = Staff::where('temp_code', Hash::check($verifyData['temp_code'], $verifyData['temp_code']))
+                        ->first();
+            if (!$user) {
+                Log::warning('User not found with the provided verification code.');
+                return back()->withErrors(['temp_code' => 'Incorrect verification code or user not found.']);
+            }
+    
+            Log::info('User found.', ['staff_id' => $user->staff_id, 'email' => $user->email]);
+    
+            // Limpiar el código temporal y actualizar el timestamp
+            $user->update(['temp_code' => null, 'last_update' => now()]);
+            Log::info('Temporary code cleared and last update timestamp updated.', ['staff_id' => $user->staff_id]);
+    
+            return tap(
+                redirect()->route('index')->withCookie(
+                    cookie('token', JWTAuth::fromUser($user), 1440, null, null, true, true, false, 'Strict')
+                ),
+                fn() => Log::info('User logged in successfully.', ['staff_id' => $user->staff_id])
+            );
+        } catch (\Exception $e) {
+            Log::error('Verification failed.', ['error' => $e->getMessage()]);
+            return back()->withErrors(['general' => 'An error occurred while verifying the code.']);
         }
-
-        else if ($formData['type'] === 'recovery') {
-            $encryptedId = Crypt::encryptString($user->staff_id); // Encrypt the user's ID
-
-            // Generate a signed URL for the change password page
-            $changePasswordUrl = URL::temporarySignedRoute('change-password', now()->addMinutes(15), [
-                'staff_id' => $encryptedId
-            ]);
-
-            return redirect($changePasswordUrl);
-        }
-
-        return redirect()->route('sign-in');
     }
+    
 
     /*----------------------------------------------------------------------------------------------------*/
 
@@ -151,58 +149,68 @@ class AuthController extends Controller
      * @param h-captcha-response string The hCaptcha response token.
      * @return \Illuminate\Http\RedirectResponse Redirect the user to the sign-in page.
      */
-    public function register(RegisterRequest $request) {
-        // Log the start of the registration process
-        Log::info('Starting user registration.');
+    public function register(Request $request)
+    {
+        Log::info('Starting staff registration.');
 
-        // Get validated user data
-        $formData = $request->validated();
-        Log::info('Validated form data.', $formData);
+        $validator = Validator::make($request->all(), [
+            'first_name' => ['required', 'string', 'max:255', 'min:3', 'regex:/^[a-zA-Z\s]+$/'],
+            'last_name' => ['required', 'string', 'max:255', 'min:3', 'regex:/^[a-zA-Z\s]+$/'],
+            'email' => 'required|email|unique:staff,email',
+            'password' => [
+                'required',
+                'string',
+                'min:8',
+                'max:16',
+                'confirmed',
+                'regex:/^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])/',
+                'confirmed',
+            ],
+            'username' => 'required|string|min:3|max:50',
+            'address_id' => 'required|integer',
+            'store_id' => 'required|integer',
+            'password_confirmation' => 'required|string|min:8|max:20',
+        ], [
+            'first_name.required' => 'The first name field is required.',
+            'first_name.min' => 'The first name must be at least 3 characters.',
+            'last_name.required' => 'The last name field is required.',
+            'last_name.min' => 'The last name must be at least 3 characters.',
+            'email.required' => 'The email field is required.',
+            'email.email' => 'The email must be a valid email address.',
+            'email.unique' => 'The email has already been taken.',
+            'password.required' => 'The password field is required.',
+            'password.min' => 'The password must be at least 8 characters.',
+            'password.regex' => 'The password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.',
+            'h-captcha-response.required' => 'Please verify that you are not a robot.',
+        ]);
 
-        // Verify the hCaptcha response token with the hCaptcha API
-        $captchaResponse = verifyCaptcha($formData['h-captcha-response']);
-        Log::info('hCaptcha verification response.', $captchaResponse);
-
-        // Check if the hCaptcha verification failed
-        if (!$captchaResponse['success']) {
-            Log::warning('Captcha verification failed.');
-            return back()->withErrors(['h-captcha-response' => 'Captcha verification failed.']);
+        
+        if ($validator->fails()) {
+            Log::warning('Validation failed.', $validator->errors()->toArray());
+            return back()->withErrors($validator)->withInput();
         }
 
-        // Create a new user
-        try {
-            $user = Staff::create([
-                'first_name' => $formData['first_name'],
-                'second_name' => $formData['second_name'],
-                'last_name' => $formData['last_name'],
-                'address_id' => $formData['address_id'],
-                'email' => $formData['email'],
-                'store_id' => $formData['store_id'],
-                'active' => 0,
-                'username' => $formData['username'],
-                'password' => sha1($formData['password']),
-                'role_id' => 2,
-            ]);
-            Log::info('User created successfully.', ['user_id' => $user->staff_id]);
-            return redirect()->to('Staff');
-        } catch (\Exception $e) {
-            Log::error('Failed to create user.', ['error' => $e->getMessage()]);
-            return back()->withErrors(['registration' => 'Failed to register user.'])->withInput();
-        }
+        $staff = Staff::create([
+            'first_name' => $request->input('first_name'),
+            'last_name' => $request->input('last_name'),
+            'email' => $request->input('email'),
+            'password' => sha1($request['password']),
+            'username' => $request->input('username'),
+            'address_id' => $request->input('address_id'),
+            'store_id' => $request->input('store_id'),
+            'role_id' => 2,
+            'active' => 0,
+            'last_update' => now(),
+        ]);
 
-        // Encrypt the user's ID
-        $encryptedId = Crypt::encryptString($user->staff_id);
-        Log::info('User ID encrypted.', ['encrypted_id' => $encryptedId]);
-
-        // Generate a signed URL for the account activation page
+        $encryptedId = Crypt::encryptString($staff->staff_id);
         $activateAccountUrl = URL::temporarySignedRoute('activate-account', now()->addMinutes(15), [
             'staff_id' => $encryptedId
         ]);
-        Log::info('Generated activation URL.', ['url' => $activateAccountUrl]);
+        
+        Mail::to($staff->email)->send(new AuthMail($staff->first_name, $activateAccountUrl));
 
-        // Redirect the user to the account activation page
-        Log::info('Redirecting user to account activation page.');
-        return redirect($activateAccountUrl);
+        return redirect()->route('User.login');
     }
 
     /**
@@ -213,30 +221,20 @@ class AuthController extends Controller
      * @param h-captcha-response string The hCaptcha response token.
      * @return \Illuminate\Http\RedirectResponse Redirect the user to the home page.
      */
-    public function activateAccount(ActivateAccountRequest $request) {
-        // Validate the request data
-        $formData = $request->validated();
+    public function activateAccount($staff_id)
+    {
+        try {
+            $staffId = Crypt::decryptString($staff_id);
 
-        // Decrypt the user ID
-        $staffId = (int) Crypt::decryptString($formData['staff_id']); // Decrypt the user ID
-        $user = Staff::where('staff_id', $staffId)->and('role_id', 2)->first(); // Get the user from the database
+            $staff = Staff::findOrFail($staffId);
 
-        // Check if the user exists
-        if (!$user)
-            return back()->withErrors(['staff_id' => 'User not found.']);
+            $staff->active = 1;
+            $staff->save();
 
-        // Check if the verification code is correct
-        if (!Hash::check($formData['temp_code'], $user->temp_code))
-            return back()->withErrors(['temp_code' => 'The verification code is incorrect.'])->withInput();
-
-        // Remove the verification code and verify the user's email
-        $user->temp_code = null;
-        $user->active = 1;
-        $user->last_update = now();
-        $user->save();
-
-        // Redirect the user to the sign-in page
-        return redirect()->route('sign-in')->with('success', 'User account activated successfully.');
+            return redirect()->route('User.login')->with('status', 'Account activated successfully!');
+        } catch (\Exception $e) {
+            return redirect()->route('User.login')->with('error', 'The activation link is invalid or expired.');
+        }
     }
 
     /*----------------------------------------------------------------------------------------------------*/
