@@ -177,6 +177,14 @@ Route::get('Login', function () {
 Route::post('Login', [AuthController::class, 'login'])->name('User.login');
 Route::get('/activate-account', [AuthController::class, 'activateAccount'])->name('activate-account');
 Route::post('/verifyCode', [AuthController::class, 'verifyCode'])->name('verify-code');
+Route::get('recover-password', function () {
+    return view('User.recover_password');
+})->name('User.recover_password');
+
+Route::post('password/forgot', [AuthController::class, 'forgotPassword'])->name('password.forgot');
+Route::get('password/reset/{staff_id}', [AuthController::class, 'showResetForm'])
+    ->name('User.reset_password');
+Route::post('/reset-password', [AuthController::class, 'changePassword'])->name('User.reset_password');
 
 Route::get('Register', function () {
     return view('User.register');

@@ -10,6 +10,7 @@ use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\VerifyCodeRequest;
 use App\Mail\AuthMail;
 use App\Mail\VerifyMail;
+use App\Mail\PasswordMail;
 use App\Models\Staff;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Crypt;
@@ -246,40 +247,29 @@ class AuthController extends Controller
      * @param h-captcha-response string The hCaptcha response token.
      * @return \Illuminate\Http\RedirectResponse Redirect the user to the verification code page.
      */
-    public function forgotPassword(ForgotPasswordRequest $request) {
-        // Validate the request data
-        $formData = $request->validated();
-
-        // Get the user from the database by email
-        $user = Staff::where('email', $formData['email'])->and('role_id', 2)->first();
-
-        // Check if the user was not found
-        if (!$user)
-            return back()->withErrors(['email' => 'User not found.']);
-
-        // Generate a random 6-digit verification code
-        $tempCode = rand(100000, 999999);
-
-        // Save the verification code to the user's record
-        $user->temp_code = Hash::make($tempCode);
-        $user->last_update = now();
-        $user->save();
-
-        // Send the verification code to the user's email
-        Mail::to($user->email)->send(new AuthMail($user->first_name, $tempCode));
-
-        // Encrypt the user's ID
-        $encryptedId = Crypt::encryptString($user->staff_id);
-
-        // Generate a signed URL for the verification code page
-        $verifyCodeUrl = URL::temporarySignedRoute('verify-code', now()->addMinutes(15), [
-            'staff_id' => $encryptedId,
-            'type' => 'recovery'
+    public function forgotPassword(Request $request) {
+        $request->validate([
+            'email' => 'required|email|exists:staff,email'
         ]);
 
-        // Redirect the user to the verification code page
-        return redirect($verifyCodeUrl);
+        $user = Staff::where('email', $request->email)->first();
+
+        if (!$user) {
+            return back()->withErrors(['email' => 'User not found.']);
+        }
+
+        // Enlace seguro para restablecer contraseña
+        $encryptedId = Crypt::encryptString($user->staff_id);
+        $resetUrl = URL::temporarySignedRoute('User.reset_password', now()->addMinutes(15), [
+            'staff_id' => $encryptedId
+        ]);
+
+        // Enviar correo
+        Mail::to($user->email)->send(new PasswordMail($user->first_name, $resetUrl));
+
+        return redirect()->route('User.login');
     }
+
 
     /**
      * Change the user's password.
@@ -288,24 +278,22 @@ class AuthController extends Controller
      * @param password string The user's new password.
      * @return \Illuminate\Http\RedirectResponse Redirect the user to the sign-in page.
      */
-    public function changePassword(ChangePasswordRequest $request) {
-        // Validate the request data
-        $formData = $request->validated();
-
-        // Decrypt the user ID
-        $staffId = (int) Crypt::decryptString($formData['staff_id']);
-        $user = Staff::where('staff_id', $staffId)->and('role_id', 2)->first();
-
-        // Check if the user exists
-        if (!$user)
-            return back()->withErrors(['staff_id' => 'User not found.']);
-
-        // Update the user's password
-        $user->password = sha1($formData['password']);
-        $user->last_update = now();
+    public function changePassword(Request $request) {
+        $request->validate([
+            'email' => 'required|email|exists:staff,email',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+    
+        $user = Staff::where('email', $request->email)->first();
+    
+        if (!$user) {
+            return back()->withErrors(['email' => 'No account found with this email.']);
+        }
+    
+        $user->password = sha1($request->password);
         $user->save();
-
-        return redirect()->route('sign-in')->with('success', 'Password changed successfully.');
+    
+        return redirect()->route('User.login')->with('status', 'Password updated successfully.');
     }
 
     /*----------------------------------------------------------------------------------------------------*/
@@ -323,5 +311,14 @@ class AuthController extends Controller
 
         // Redirect the user to the sign-in page
         return redirect()->route('sign-in')->withCookie($cookie);
+    }
+
+    public function showResetForm(Request $request, $staff_id) {
+        try {
+            $decryptedId = Crypt::decryptString($staff_id);
+            return view('User.recover_password', ['staff_id' => $staff_id]);
+        } catch (\Exception $e) {
+            return redirect()->route('User.login')->withErrors(['error' => 'Invalid or expired reset link.']);
+        }
     }
 }
